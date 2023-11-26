@@ -1,5 +1,6 @@
 package com.huangrx.template;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -15,6 +16,7 @@ import java.net.UnknownHostException;
  * @since 2023/11/22 23:27
  */
 @SpringBootApplication
+@MapperScan("com.huangrx.template.mapper")
 public class TemplateAdminApplication {
 
     public static void main(String[] args) throws UnknownHostException {
