@@ -8,6 +8,7 @@ import com.huangrx.template.utils.jackson.JacksonUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -50,6 +51,14 @@ public class UserAuthenticationFilter extends AbstractAuthenticationProcessingFi
         }
 
         LoginRequest requestBody = getRequestBody(request);
+        AbstractAuthenticationToken authenticationToken = getAuthenticationToken(requestBody);
+        authenticationToken.setDetails(authenticationDetailsSource.buildDetails(request));
+        log.info("UserAuthenticationFilter ------ 身份认证处理过滤器调用相关Provider进行处理");
+        return this.getAuthenticationManager().authenticate(authenticationToken);
+    }
+
+    @NotNull
+    private static AbstractAuthenticationToken getAuthenticationToken(LoginRequest requestBody) {
         String loginType = requestBody.getLoginType();
         AbstractAuthenticationToken authenticationToken;
         if (LoginType.REFRESH_TOKEN.getCode().equalsIgnoreCase(loginType)) {
@@ -59,9 +68,7 @@ public class UserAuthenticationFilter extends AbstractAuthenticationProcessingFi
         } else {
             authenticationToken = new UserLoginNormalAuthenticationToken(requestBody.getMobile(), requestBody.getPassword());
         }
-        authenticationToken.setDetails(authenticationDetailsSource.buildDetails(request));
-        log.info("UserAuthenticationFilter ------ 身份认证处理过滤器调用相关Provider进行处理");
-        return this.getAuthenticationManager().authenticate(authenticationToken);
+        return authenticationToken;
     }
 
     private LoginRequest getRequestBody(HttpServletRequest request) throws IOException {
