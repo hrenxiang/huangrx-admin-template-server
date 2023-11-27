@@ -32,6 +32,7 @@
         <velocity-engine.version>2.3</velocity-engine.version>
         <mysql.connector.version>8.0.33</mysql.connector.version>
         <hutool.version>5.8.20</hutool.version>
+        <guava.version>32.1.3-jre</guava.version>
         <lombok.version>1.18.24</lombok.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <io.swagger.version>1.6.8</io.swagger.version>
@@ -41,6 +42,7 @@
         <commons.fileupload.version>1.5</commons.fileupload.version>
         <commons.collections4.version>4.4</commons.collections4.version>
         <java-jwt.version>4.4.0</java-jwt.version>
+        <ip2region.version>2.7.0</ip2region.version>
     </properties>
 
     <dependencies>
@@ -83,6 +85,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- ip转地区 -->
+            <dependency>
+                <groupId>org.lionsoul</groupId>
+                <artifactId>ip2region</artifactId>
+                <version>${ip2region.version}</version>
+            </dependency>
+
             <!-- 编解码常用工具类 版本springboot控制 -->
             <dependency>
                 <groupId>commons-codec</groupId>
@@ -175,6 +184,11 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
 
             <!--  swagger注解  -->

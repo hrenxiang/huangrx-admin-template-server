@@ -102,7 +102,7 @@ public class IpUtil {
      */
     public static String getMultistageReverseProxyIp(String ip) {
         // 多级反向代理检测
-        if (ip != null && ip.indexOf(StrPool.COMMA) > 0) {
+        if (ip != null && ip.contains(StrPool.COMMA)) {
             final String[] ips = ip.trim().split(StrPool.COMMA);
             for (String subIp : ips) {
                 if (!isUnknown(subIp)) {

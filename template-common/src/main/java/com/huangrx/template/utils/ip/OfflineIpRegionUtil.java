@@ -1,8 +1,10 @@
 package com.huangrx.template.utils.ip;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.lionsoul.ip2region.xdb.Searcher;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,8 +25,10 @@ public class OfflineIpRegionUtil {
 
         byte[] bytes = null;
         try {
-            bytes = new byte[resourceAsStream.available()];
-            IOUtils.read(resourceAsStream, bytes);
+            if (resourceAsStream != null) {
+                bytes = new byte[resourceAsStream.available()];
+                IOUtils.read(resourceAsStream, bytes);
+            }
         } catch (IOException e) {
             log.error("读取本地Ip文件失败", e);
         }
@@ -39,14 +43,14 @@ public class OfflineIpRegionUtil {
 
     public static IpRegion getIpRegion(String ip) {
         try {
-            if (StrUtil.isBlank(ip) || IpUtil.isValidIpv6(ip)
+            if (CharSequenceUtil.isBlank(ip) || IpUtil.isValidIpv6(ip)
                 || IpUtil.isValidIpv4(ip)) {
                 return null;
             }
 
             String rawRegion = searcher.search(ip);
 
-            if (StrUtil.isEmpty(rawRegion)) {
+            if (CharSequenceUtil.isEmpty(rawRegion)) {
                 return null;
             }
 

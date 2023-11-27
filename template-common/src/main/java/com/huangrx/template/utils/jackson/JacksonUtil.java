@@ -68,7 +68,7 @@ public class JacksonUtil {
             //初始化
             mapper = initMapper();
         } catch (Exception e) {
-            log.error("jackson config error", e);
+            throw new JacksonException("JacksonUtil 初始化失败", e);
         }
     }
 

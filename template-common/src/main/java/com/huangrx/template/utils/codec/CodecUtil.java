@@ -9,7 +9,6 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.AlgorithmParameters;
 import java.security.InvalidKeyException;
@@ -37,8 +36,8 @@ public class CodecUtil {
      * @param isBase64 返回结果是否要经过Base64编码，默认16进制
      * @return 加密后的数据
      */
-    public static String MD5(String res, Boolean isBase64) {
-        return messageDigest(res, CodecType.MD5.name(), isBase64);
+    public static String md5(String res, Boolean isBase64) {
+        return messageDigest(res, CodecType.MD5.getValue(), isBase64);
     }
 
     /**
@@ -49,8 +48,8 @@ public class CodecUtil {
      * @param isBase64 返回结果是否要经过Base64编码，默认16进制
      * @return 加密后的数据
      */
-    public static String MD5(String res, String key, Boolean isBase64) {
-        return keyGeneratorMac(res, CodecType.MD5.name(), key, isBase64);
+    public static String md5(String res, String key, Boolean isBase64) {
+        return keyGeneratorMac(res, CodecType.MD5.getValue(), key, isBase64);
     }
 
     /**
@@ -60,8 +59,8 @@ public class CodecUtil {
      * @param isBase64 返回结果是否要经过Base64编码，默认16进制
      * @return 加密后的数据
      */
-    public static String SHA1(String res, Boolean isBase64) {
-        return messageDigest(res, CodecType.SHA1.name(), isBase64);
+    public static String sha1(String res, Boolean isBase64) {
+        return messageDigest(res, CodecType.SHA1.getValue(), isBase64);
     }
 
     /**
@@ -72,8 +71,8 @@ public class CodecUtil {
      * @param isBase64 返回结果是否要经过Base64编码，默认16进制
      * @return 加密后的数据
      */
-    public static String SHA1(String res, String key, Boolean isBase64) {
-        return keyGeneratorMac(res, CodecType.SHA1.name(), key, isBase64);
+    public static String sha1(String res, String key, Boolean isBase64) {
+        return keyGeneratorMac(res, CodecType.SHA1.getValue(), key, isBase64);
     }
 
     /**
@@ -83,8 +82,8 @@ public class CodecUtil {
      * @param isBase64 返回结果是否要经过Base64编码，默认16进制
      * @return 加密后的数据
      */
-    public static String SHA256(String res, Boolean isBase64) {
-        return messageDigest(res, CodecType.SHA256.name(), isBase64);
+    public static String sha256(String res, Boolean isBase64) {
+        return messageDigest(res, CodecType.SHA256.getValue(), isBase64);
     }
 
     /**
@@ -95,8 +94,8 @@ public class CodecUtil {
      * @param isBase64 返回结果是否要经过Base64编码，默认16进制
      * @return 加密后的数据
      */
-    public static String SHA256(String res, String key, Boolean isBase64) {
-        return keyGeneratorMac(res, CodecType.SHA256.name(), key, isBase64);
+    public static String sha256(String res, String key, Boolean isBase64) {
+        return keyGeneratorMac(res, CodecType.SHA256.getValue(), key, isBase64);
     }
 
     /**
@@ -106,8 +105,8 @@ public class CodecUtil {
      * @param isBase64 返回结果是否要经过Base64编码，默认16进制
      * @return 加密后的数据
      */
-    public static String SHA512(String res, Boolean isBase64) {
-        return messageDigest(res, CodecType.HmacSHA512.name(), isBase64);
+    public static String sha512(String res, Boolean isBase64) {
+        return messageDigest(res, CodecType.HMAC_SHA512.getValue(), isBase64);
     }
 
     /**
@@ -118,8 +117,8 @@ public class CodecUtil {
      * @param isBase64 返回结果是否要经过Base64编码，默认16进制
      * @return 加密后的数据
      */
-    public static String SHA512(String res, String key, Boolean isBase64) {
-        return keyGeneratorMac(res, CodecType.HmacSHA512.name(), key, isBase64);
+    public static String sha512(String res, String key, Boolean isBase64) {
+        return keyGeneratorMac(res, CodecType.HMAC_SHA512.getValue(), key, isBase64);
     }
 
     // ========================================== 对称加密算法（可逆） =======================================================
@@ -131,8 +130,8 @@ public class CodecUtil {
      * @param key 秘钥
      * @return 加密后的数据
      */
-    public static String AESEncode(String res, String key) {
-        return keyGeneratorEs(res, CodecType.AES.name(), CodecMode.ECB.name(), CodecPadding.PKCS5Padding.name(), key, true);
+    public static String aesEncode(String res, String key) {
+        return keyGeneratorEs(res, CodecType.AES.getValue(), CodecMode.ECB.name(), CodecPadding.PKCS5_PADDING.getValue(), key, true);
     }
 
     /**
@@ -144,8 +143,8 @@ public class CodecUtil {
      * @param padding 加密补码模式
      * @return 加密后的数据
      */
-    public static String AESEncode(String res, String key, String mode, String padding) {
-        return keyGeneratorEs(res, CodecType.AES.name(), mode, padding, key, true);
+    public static String aesEncode(String res, String key, String mode, String padding) {
+        return keyGeneratorEs(res, CodecType.AES.getValue(), mode, padding, key, true);
     }
 
     /**
@@ -155,8 +154,8 @@ public class CodecUtil {
      * @param key 秘钥
      * @return 加密后的数据
      */
-    public static String AESDecode(String res, String key) {
-        return keyGeneratorEs(res, CodecType.AES.name(), CodecMode.ECB.name(), CodecPadding.PKCS5Padding.name(), key, false);
+    public static String aesDecode(String res, String key) {
+        return keyGeneratorEs(res, CodecType.AES.getValue(), CodecMode.ECB.name(), CodecPadding.PKCS5_PADDING.getValue(), key, false);
     }
 
     /**
@@ -168,8 +167,8 @@ public class CodecUtil {
      * @param padding 加密补码模式
      * @return 加密后的数据
      */
-    public static String AESDecode(String res, String key, String mode, String padding) {
-        return keyGeneratorEs(res, CodecType.AES.name(), mode, padding, key, false);
+    public static String aesDecode(String res, String key, String mode, String padding) {
+        return keyGeneratorEs(res, CodecType.AES.getValue(), mode, padding, key, false);
     }
 
     /**
@@ -179,8 +178,8 @@ public class CodecUtil {
      * @param key 秘钥
      * @return 加密后的数据
      */
-    public static String DESEncode(String res, String key) {
-        return keyGeneratorEs(res, CodecType.DES.name(), CodecMode.ECB.name(), CodecPadding.PKCS5Padding.name(), key, true);
+    public static String desEncode(String res, String key) {
+        return keyGeneratorEs(res, CodecType.DES.getValue(), CodecMode.ECB.name(), CodecPadding.PKCS5_PADDING.getValue(), key, true);
     }
 
     /**
@@ -192,8 +191,8 @@ public class CodecUtil {
      * @param padding 加密补码模式
      * @return 加密后的数据
      */
-    public static String DESEncode(String res, String key, String mode, String padding) {
-        return keyGeneratorEs(res, CodecType.DES.name(), mode, padding, key, true);
+    public static String desEncode(String res, String key, String mode, String padding) {
+        return keyGeneratorEs(res, CodecType.DES.getValue(), mode, padding, key, true);
     }
 
     /**
@@ -203,8 +202,8 @@ public class CodecUtil {
      * @param key 秘钥
      * @return 加密后的数据
      */
-    public static String DESDecode(String res, String key) {
-        return keyGeneratorEs(res, CodecType.DES.name(), CodecMode.ECB.name(), CodecPadding.PKCS5Padding.name(), key, false);
+    public static String desDecode(String res, String key) {
+        return keyGeneratorEs(res, CodecType.DES.getValue(), CodecMode.ECB.name(), CodecPadding.PKCS5_PADDING.getValue(), key, false);
     }
 
     /**
@@ -216,8 +215,8 @@ public class CodecUtil {
      * @param padding 加密补码模式
      * @return 加密后的数据
      */
-    public static String DESDecode(String res, String key, String mode, String padding) {
-        return keyGeneratorEs(res, CodecType.DES.name(), mode, padding, key, false);
+    public static String desDecode(String res, String key, String mode, String padding) {
+        return keyGeneratorEs(res, CodecType.DES.getValue(), mode, padding, key, false);
     }
 
     /**
@@ -227,7 +226,7 @@ public class CodecUtil {
      * @param key 秘钥
      * @return 加密后的数据
      */
-    public static String XOREncode(String res, String key) {
+    public static String xorEncode(String res, String key) {
         byte[] bs = res.getBytes();
         for (int i = 0; i < bs.length; i++) {
             bs[i] = (byte) ((bs[i]) ^ key.hashCode());
@@ -242,7 +241,7 @@ public class CodecUtil {
      * @param key 秘钥
      * @return 加密后的数据
      */
-    public static String XORDecode(String res, String key) {
+    public static String xorDecode(String res, String key) {
         byte[] bs = parseHexStr2Byte(res);
         for (int i = 0; i < Objects.requireNonNull(bs).length; i++) {
             bs[i] = (byte) ((bs[i]) ^ key.hashCode());
@@ -257,7 +256,7 @@ public class CodecUtil {
      * @param key 秘钥
      * @return 加密后的数据
      */
-    public static int XOR(int res, String key) {
+    public static int xor(int res, String key) {
         return res ^ key.hashCode();
     }
 
@@ -267,7 +266,7 @@ public class CodecUtil {
      * @param res 密文
      * @return 加密后的数据
      */
-    public static String Base64Encode(String res) {
+    public static String base64Encode(String res) {
         byte[] bytes = res.getBytes(StandardCharsets.UTF_8);
         return Base64.getEncoder().encodeToString(bytes);
     }
@@ -278,24 +277,24 @@ public class CodecUtil {
      * @param res 密文
      * @return 加密后的数据
      */
-    public static String Base64Decode(String res) {
+    public static String base64Decode(String res) {
         return new String(Base64.getDecoder().decode(res), StandardCharsets.UTF_8);
     }
 
     /**
      * HmacSHA1 加密
      *
-     * @param content          内容
-     * @param key              加密秘钥
+     * @param content 内容
+     * @param key     加密秘钥
      * @return 加密后的数据
      */
     public static String getHmacSign(String content, String key) {
         byte[] result = null;
         try {
             //根据给定的字节数组构造一个密钥,第二参数指定一个密钥算法的名称
-            SecretKeySpec signKey = new SecretKeySpec(key.getBytes(), CodecType.HmacSHA1.name());
+            SecretKeySpec signKey = new SecretKeySpec(key.getBytes(), CodecType.HMAC_SHA1.getValue());
             //生成一个指定 Mac 算法 的 Mac 对象
-            Mac mac = Mac.getInstance(CodecType.HmacSHA1.name());
+            Mac mac = Mac.getInstance(CodecType.HMAC_SHA1.getValue());
             //用给定密钥初始化 Mac 对象
             mac.init(signKey);
             //完成 Mac 操作
@@ -304,7 +303,7 @@ public class CodecUtil {
             result = org.apache.commons.codec.binary.Base64.encodeBase64(rawHmac);
 
         } catch (NoSuchAlgorithmException | InvalidKeyException | IllegalStateException e) {
-            log.error(e.getMessage());
+            throw new CodecException("HmacSHA1 加密失败！", e);
         }
         if (null != result) {
             return new String(result);
@@ -330,9 +329,8 @@ public class CodecUtil {
             }
             return CodecUtil.parseByte2HexStr(md.digest(resBytes));
         } catch (Exception e) {
-            log.error("messageDigest error: {}", e.getMessage());
+            throw new CodecException("使用MessageDigest进行单向加密失败！", e);
         }
-        return null;
     }
 
     /**
@@ -361,9 +359,8 @@ public class CodecUtil {
             }
             return CodecUtil.parseByte2HexStr(result);
         } catch (Exception e) {
-            log.error("keyGeneratorMac error: {}", e.getMessage());
+            throw new CodecException("使用KeyGenerator进行单向/双向加密失败！", e);
         }
-        return null;
     }
 
     /**
@@ -378,11 +375,11 @@ public class CodecUtil {
     private static String keyGeneratorEs(String res, String algorithm, String mode, String padding, String key, Boolean isEncode) {
         try {
             if (!CodecKeySize.verifyKeySize(key, algorithm)) {
-                throw new RuntimeException("AES密钥支持128位、196位、以及256位！DES密钥只支持128位！");
+                throw new CodecException("AES密钥支持128位、196位、以及256位！DES密钥只支持128位！");
             }
 
-            mode = mode == null ? "ECB" : mode;
-            padding = padding == null ? "PKCS5Padding" : padding;
+            mode = mode == null ? CodecMode.ECB.name() : mode;
+            padding = padding == null ? CodecPadding.PKCS5_PADDING.getValue() : padding;
             String resultAlgorithm = algorithm + "/" + mode + "/" + padding;
 
             byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
@@ -413,9 +410,8 @@ public class CodecUtil {
             }
 
         } catch (Exception e) {
-            log.error("keyGeneratorEs error: {}", e.getMessage());
+            throw new CodecException("使用KeyGenerator双向加密，DES/AES失败", e);
         }
-        return null;
     }
 
     /**
@@ -452,135 +448,6 @@ public class CodecUtil {
             result[i] = (byte) (high * 16 + low);
         }
         return result;
-    }
-
-    private enum CodecType {
-        /**
-         * {@inheritDoc}
-         */
-        MD5,
-        SHA1,
-        SHA256,
-        SHA512,
-        HmacMD5,
-        HmacSHA1,
-        HmacSHA256,
-        HmacSHA512,
-        DES,
-        AES
-    }
-
-    /**
-     * 模式
-     * <p>
-     * 加密算法模式，是用来描述加密算法（此处特指分组密码，不包括流密码，）在加密时对明文分组的模式，它代表了不同的分组方式
-     */
-    public enum CodecMode {
-        /**
-         * 无模式
-         */
-        NONE,
-        /**
-         * 密码分组连接模式（Cipher Block Chaining）
-         */
-        CBC,
-        /**
-         * 密文反馈模式（Cipher Feedback）
-         */
-        CFB,
-        /**
-         * 计数器模式（A simplification of OFB）
-         */
-        CTR,
-        /**
-         * Cipher Text Stealing
-         */
-        CTS,
-        /**
-         * 电子密码本模式（Electronic CodeBook）
-         */
-        ECB,
-        /**
-         * 输出反馈模式（Output Feedback）
-         */
-        OFB,
-        /**
-         * Propagating Cipher Block
-         */
-        PCBC
-    }
-
-    /**
-     * 补码方式
-     *
-     * <p>
-     * 补码方式是在分组密码中，当明文长度不是分组长度的整数倍时，需要在最后一个分组中填充一些数据使其凑满一个分组的长度。
-     */
-    public enum CodecPadding {
-        /**
-         * 无补码
-         */
-        NoPadding,
-        /**
-         * 0补码，即不满block长度时使用0填充
-         */
-        ZeroPadding,
-        /**
-         * This padding for block ciphers is described in 5.2 Block Encryption Algorithms in the W3C's "XML Encryption Syntax and Processing" document.
-         */
-        ISO10126Padding,
-        /**
-         * Optimal Asymmetric Encryption Padding scheme defined in PKCS1
-         */
-        OAEPPadding,
-        /**
-         * The padding scheme described in PKCS #1, used with the RSA algorithm
-         */
-        PKCS1Padding,
-        /**
-         * The padding scheme described in RSA Laboratories, "PKCS #5: Password-Based Encryption Standard," version 1.5, November 1993.
-         */
-        PKCS5Padding,
-        /**
-         * The padding scheme defined in the SSL Protocol Version 3.0, November 18, 1996, section 5.2.3.2 (CBC block cipher)
-         */
-        SSL3Padding
-    }
-
-    public enum CodecKeySize {
-
-        /**
-         * CodecKeySize
-         */
-        SIX_FOUR(64),
-        ONE_TWO_EIGHT(128),
-        ONE_NINE_SIX(196),
-        TWO_FIVE_SIX(256);
-
-        private final Integer value;
-
-        CodecKeySize(Integer value) {
-            this.value = value;
-        }
-
-        public static boolean verifyKeySize(String key, String algorithm) {
-            byte[] bytes = key.getBytes(StandardCharsets.UTF_8);
-
-            if (CodecType.AES.name().equals(algorithm)) {
-                for (CodecKeySize keySize : CodecKeySize.values()) {
-                    if (bytes.length == (keySize.value / 8)) {
-                        return Boolean.TRUE;
-                    }
-                }
-            } else {
-                if (bytes.length == (CodecKeySize.SIX_FOUR.value / 8)) {
-                    return Boolean.TRUE;
-                }
-            }
-
-
-            return Boolean.FALSE;
-        }
     }
 
 }

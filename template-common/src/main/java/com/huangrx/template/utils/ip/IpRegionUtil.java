@@ -1,6 +1,6 @@
 package com.huangrx.template.utils.ip;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 
 
 /**
@@ -15,7 +15,7 @@ public class IpRegionUtil {
     }
 
     public static IpRegion getIpRegion(String ip) {
-        if (StrUtil.isEmpty(ip)) {
+        if (CharSequenceUtil.isEmpty(ip)) {
             return new IpRegion();
         }
 
