@@ -1,32 +1,35 @@
 package com.huangrx.template.security.config;
 
+import com.huangrx.template.cache.RedisUtil;
+import com.huangrx.template.security.filter.JwtAuthenticationTokenFilter;
 import com.huangrx.template.security.filter.UserAuthenticationFilter;
 import com.huangrx.template.security.handler.RestAuthenticationEntryPoint;
 import com.huangrx.template.security.handler.RestfulAccessDeniedHandler;
 import com.huangrx.template.security.handler.UserLoginAuthenticationFailureHandler;
 import com.huangrx.template.security.handler.UserLoginAuthenticationSuccessHandler;
 import com.huangrx.template.security.provider.UserLoginNormalAuthenticationProvider;
+import com.huangrx.template.security.user.service.SystemLoginService;
+import com.huangrx.template.service.ISysUserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -39,14 +42,17 @@ import java.util.List;
 @Slf4j
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableMethodSecurity
+public class SecurityConfig {
 
     @Resource
-    private IUserService userService;
+    private SystemLoginService systemLoginService;
 
     @Resource
-    private RedisService redisService;
+    private RedisUtil redisUtil;
+
+    @Resource
+    private IgnoreUrlsConfig ignoreUrlsConfig;
 
     /**
      * 强散列哈希加密实现
@@ -61,6 +67,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
         return new JwtAuthenticationTokenFilter();
+    }
+
+    @Bean
+    public AuthenticationProvider userLoginNormalAuthenticationProvider() {
+        return new UserLoginNormalAuthenticationProvider();
     }
 
     @Bean
@@ -89,69 +100,63 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://blog.huangrx.cn", "https://www.huangrx.cn"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        log.info("SecurityConfig ------ 自定义Security相关配置开始");
+    public CorsFilter corsFilter() {
+        log.info("SecurityConfig ------ Security跨域配置初始化");
 
         // 配置相关公共注入资源
         InjectionSourceConfig.instance().setPasswordEncoder(passwordEncoder());
-        InjectionSourceConfig.instance().setUserService(userService);
-        InjectionSourceConfig.instance().setRedisService(redisService);
+        InjectionSourceConfig.instance().setLoginService(systemLoginService);
+        InjectionSourceConfig.instance().setRedisUtil(redisUtil);
 
-        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity
-                .authorizeRequests();
+        CorsConfiguration config = new CorsConfiguration();
+        // 允许的域，可以设置为具体的域名或 "*" 表示所有域都允许访问
+        config.addAllowedOrigin("*");
+        // 允许的方法，比如 GET、POST 等
+        config.addAllowedMethod("*");
+        // 允许的头信息
+        config.addAllowedHeader("*");
+        // 是否支持凭证（跨域请求携带 cookie 等凭证信息）
+        config.setAllowCredentials(true);
 
-        //不需要保护的资源路径允许访问
-        for (String url : ignoreUrlsConfig().getUrls()) {
-            registry.antMatchers(url).permitAll();
-        }
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
 
-        // 任何请求需要身份认证
-        registry.and()
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                // 因基于token所以不使用session  又因不使用session关闭跨站请求防护
-                .and()
-                .cors()
-                .and()
-                .csrf()
-                .disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                // 自定义权限拒绝处理类
-                .and()
-                .exceptionHandling()
-                .accessDeniedHandler(restfulAccessDeniedHandler())
-                .authenticationEntryPoint(restAuthenticationEntryPoint())
-                // 自定义权限拦截器JWT过滤器
-                .and()
-                .addFilterAfter(getUserAuthenticationFilter(), ExceptionTranslationFilter.class)
-                // 添加JWT filter
-                .addFilterBefore(jwtAuthenticationTokenFilter(), ExceptionTranslationFilter.class);
+        return new CorsFilter(source);
     }
 
-    /**
-     * 身份认证接口
-     *
-     * @param auth auth
-     * @throws Exception 异常
-     */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        log.info("SecurityConfig ------ Security相关配置初始化");
+
+        // 需要放行的接口
+        List<String> permitUrls = ignoreUrlsConfig.getUrls();
+
+        http
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(permitUrls.toArray(new String[0]))
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
+                // 禁用Basic明文验证
+                .httpBasic(AbstractHttpConfigurer::disable)
+                // 前后端分离，由于同源策略，不需要设置csrf防护机制
+                .csrf(AbstractHttpConfigurer::disable)
+                // 禁用默认登录页
+                .formLogin(AbstractHttpConfigurer::disable)
+                // 禁用默认登出页
+                .logout(AbstractHttpConfigurer::disable)
+                // 创建策略为“无状态”，这意味着每个请求都不会创建或使用会话，使得服务变得无状态化。
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // 设置异常accessDenied and EntryPoint
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedHandler(restfulAccessDeniedHandler())
+                        .authenticationEntryPoint(restAuthenticationEntryPoint()))
+                // 自定义用户认证过滤器链
+                .addFilterBefore(userAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                // 自定义权限拦截器JWT过滤器
+                .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 
     /**
@@ -159,7 +164,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return 过滤器 UserAuthenticationFilter
      */
-    private UserAuthenticationFilter getUserAuthenticationFilter() {
+    private UserAuthenticationFilter userAuthenticationFilter() {
         log.info("UserAuthenticationFilter ------ 身份认证处理过滤器初始化开始");
         UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(successHandler(), failureHandler());
         List<AuthenticationProvider> providerList = List.of(

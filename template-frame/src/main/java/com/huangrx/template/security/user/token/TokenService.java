@@ -1,20 +1,22 @@
-package com.huangrx.template.security.util;
+package com.huangrx.template.security.user.token;
 
-import cn.huangrx.blogserver.exception.ApiException;
-import cn.huangrx.blogserver.security.config.TokenConfig;
-import cn.huangrx.blogserver.security.enums.TokenType;
 import cn.hutool.core.date.DateUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.huangrx.template.exception.ApiException;
+import com.huangrx.template.exception.error.ErrorCode;
+import com.huangrx.template.security.config.TokenConfig;
+import com.huangrx.template.security.user.token.TokenType;
+import com.huangrx.template.security.util.SecurityUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,7 +28,9 @@ import java.util.Date;
  */
 @Slf4j
 @Component
-public class TokenUtil {
+public class TokenService {
+
+    private TokenService() {}
 
     /**
      * 用户名密码登录
@@ -35,7 +39,7 @@ public class TokenUtil {
      * @return token
      */
     public static String generateTokenForUserNormal(Authentication authentication) {
-        return generateToken(authentication, TokenType.NORMAL.getCode());
+        return generateToken(authentication,TokenType.NORMAL.getCode());
     }
 
     /**
@@ -48,14 +52,6 @@ public class TokenUtil {
         return generateRefreshToken(authentication, TokenType.NORMAL.getCode());
     }
 
-    public static String generateTokenForWeiXin(Authentication authentication) {
-        return generateToken(authentication, TokenType.WECHAT.getCode());
-    }
-
-    public static String generateRefreshTokenForWeiXin(Authentication authentication) {
-        return generateRefreshToken(authentication, TokenType.WECHAT.getCode());
-    }
-
     /**
      * 使用Auth0-Java-JWT生成对应的 Token
      *
@@ -65,7 +61,7 @@ public class TokenUtil {
      */
     private static String generateToken(Authentication authentication, Integer tokenType) {
         return JWT.create()
-                .withSubject(TokenConfig.getTokenSubjectAccess())
+                .withSubject()
                 //签发对象
                 .withAudience(SecurityUtil.getMobile(authentication))
                 //登录类型
@@ -87,10 +83,13 @@ public class TokenUtil {
     private static String generateRefreshToken(Authentication authentication, Integer tokenType) {
         return JWT.create()
                 .withSubject(TokenConfig.getTokenSubjectRefresh())
-                .withAudience(SecurityUtil.getMobile(authentication))   //签发对象
+                //签发对象
+                .withAudience(SecurityUtil.getMobile(authentication))
                 .withClaim("TOKEN_TYPE", tokenType)
-                .withIssuedAt(DateUtil.date().toJdkDate())    //发行时间
-                .withExpiresAt(generateExpiresDate(TokenConfig.getRefreshExpireTime()))  //有效时间
+                //发行时间
+                .withIssuedAt(DateUtil.date().toJdkDate())
+                //有效时间
+                .withExpiresAt(generateExpiresDate(TokenConfig.getRefreshExpireTime()))
                 .sign(Algorithm.HMAC256(TokenConfig.getSecretKey()));
     }
 
@@ -174,7 +173,7 @@ public class TokenUtil {
         try {
             return JWT.decode(token).getAudience().get(0);
         } catch (JWTDecodeException j) {
-            throw new ApiException("Token 解析失败");
+            throw new ApiException(ErrorCode.Business.LOGIN_TOKEN_PARSE_ERROR);
         }
     }
 
@@ -187,7 +186,7 @@ public class TokenUtil {
         try {
             return JWT.decode(token).getClaim("TOKEN_TYPE").asString();
         } catch (JWTDecodeException j) {
-            throw new ApiException("Token 解析失败");
+            throw new ApiException(ErrorCode.Business.LOGIN_TOKEN_PARSE_ERROR);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.huangrx.template.redis;
+package com.huangrx.template.cache;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.*;
@@ -16,10 +16,9 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 @RequiredArgsConstructor
-@SuppressWarnings(value = {"unchecked", "rawtypes"})
 public class RedisUtil {
 
-    public RedisTemplate redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     // =============================String=================================
 
@@ -29,7 +28,7 @@ public class RedisUtil {
      * @param key   缓存的键值
      * @param value 缓存的值
      */
-    public <T> void set(final String key, final T value) {
+    public void set(final String key, final Object value) {
         redisTemplate.opsForValue().set(key, value);
     }
 
@@ -41,7 +40,7 @@ public class RedisUtil {
      * @param timeout  时间
      * @param timeUnit 时间颗粒度
      */
-    public <T> void set(final String key, final T value, final Integer timeout, final TimeUnit timeUnit) {
+    public void set(final String key, final Object value, final Integer timeout, final TimeUnit timeUnit) {
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
 
@@ -51,8 +50,8 @@ public class RedisUtil {
      * @param key 缓存键值
      * @return 缓存键值对应的数据
      */
-    public <T> T get(final String key) {
-        ValueOperations<String, T> operation = redisTemplate.opsForValue();
+    public Object get(final String key) {
+        ValueOperations<String, Object> operation = redisTemplate.opsForValue();
         return operation.get(key);
     }
 
@@ -84,7 +83,7 @@ public class RedisUtil {
      * @param value 待缓存的数据
      * @return 缓存的对象
      */
-    public <T> Long lPush(final String key, final T value) {
+    public Long lPush(final String key, final Object value) {
         return redisTemplate.opsForList().rightPush(key, value);
     }
 
@@ -96,7 +95,7 @@ public class RedisUtil {
      * @param timeout 超时时间
      * @return 缓存的对象
      */
-    public <T> Long lPush(final String key, final T value, final Integer timeout) {
+    public Long lPush(final String key, final Object value, final Integer timeout) {
         Long count = redisTemplate.opsForList().rightPush(key, value);
         expire(key, timeout);
         return count == null ? 0L : count;
@@ -109,7 +108,7 @@ public class RedisUtil {
      * @param dataList 待缓存的List数据
      * @return 缓存的对象
      */
-    public <T> Long lPushAll(final String key, final List<T> dataList) {
+    public Long lPushAll(final String key, final List<Object> dataList) {
         return redisTemplate.opsForList().rightPushAll(key, dataList);
     }
 
@@ -121,7 +120,7 @@ public class RedisUtil {
      * @param timeout  超时时间
      * @return 缓存的对象
      */
-    public <T> Long lPushAll(final String key, final List<T> dataList, final Integer timeout) {
+    public Long lPushAll(final String key, final List<Object> dataList, final Integer timeout) {
         Long count = redisTemplate.opsForList().rightPushAll(key, dataList);
         expire(key, timeout);
         return count == null ? 0L : count;
@@ -133,8 +132,8 @@ public class RedisUtil {
      * @param key 缓存的键值
      * @return 缓存键值对应的数据
      */
-    public <T> List<T> lRange(final String key) {
-        BoundListOperations<String, T> boundListOperations = redisTemplate.boundListOps(key);
+    public List<Object> lRange(final String key) {
+        BoundListOperations<String, Object> boundListOperations = redisTemplate.boundListOps(key);
         return boundListOperations.range(0, -1);
     }
 
@@ -155,8 +154,8 @@ public class RedisUtil {
      * @param index 索引位置
      * @return 索引位置上的元素
      */
-    public <T> T lIndex(final String key, final Long index) {
-        ListOperations<String, T> listOperations = redisTemplate.opsForList();
+    public Object lIndex(final String key, final Long index) {
+        ListOperations<String, Object> listOperations = redisTemplate.opsForList();
         return listOperations.index(key, index);
     }
 
@@ -168,7 +167,7 @@ public class RedisUtil {
      * @param value 要删除的元素
      * @return 成功删除的元素数量
      */
-    public <T> Long lRemove(final String key, final Long count, final T value) {
+    public Long lRemove(final String key, final Long count, final Object value) {
         return redisTemplate.opsForList().remove(key, count, value);
     }
 
@@ -180,8 +179,8 @@ public class RedisUtil {
      * @param key 缓存键
      * @return 包含集合所有成员的 Set 对象
      */
-    public <T> Set<T> sMembers(final String key) {
-        BoundSetOperations<String, T> boundSetOperations = redisTemplate.boundSetOps(key);
+    public Set<Object> sMembers(final String key) {
+        BoundSetOperations<String, Object> boundSetOperations = redisTemplate.boundSetOps(key);
         return boundSetOperations.members();
     }
 
@@ -192,7 +191,7 @@ public class RedisUtil {
      * @param dataSet 缓存的数据
      * @return 缓存数据的对象
      */
-    public <T> Long sAdd(final String key, final Set<T>... dataSet) {
+    public final Long sAdd(final String key, final Set<Object>[] dataSet) {
         Long count = redisTemplate.opsForSet().add(key, dataSet);
         return count == null ? 0 : count;
     }
@@ -205,7 +204,7 @@ public class RedisUtil {
      * @param dataSet 缓存的数据
      * @return 缓存数据的对象
      */
-    public <T> Long sAdd(final String key, final Integer timeout, final Set<T>... dataSet) {
+    public Long sAdd(final String key, final Integer timeout, final Set<Object>[] dataSet) {
         Long count = redisTemplate.opsForSet().add(key, dataSet);
         expire(key, timeout);
         return count == null ? 0 : count;
@@ -218,7 +217,7 @@ public class RedisUtil {
      * @param value 缓存值
      * @return true=是集合中的成员；false=不是集合中的成员
      */
-    public <T> Boolean sIsMember(String key, T value) {
+    public Boolean sIsMember(String key, Object value) {
         return redisTemplate.opsForSet().isMember(key, value);
     }
 
@@ -239,8 +238,8 @@ public class RedisUtil {
      * @param values 要移除的元素
      * @return 成功移除的元素数量
      */
-    public <T> Long sRemove(final String key, T... values) {
-        return redisTemplate.opsForSet().remove(key, (Object) values);
+    public Long sRemove(final String key, Object[] values) {
+        return redisTemplate.opsForSet().remove(key, values);
     }
 
 
@@ -253,7 +252,7 @@ public class RedisUtil {
      * @param hashKey 哈希键
      * @param value   值
      */
-    public <T> void hSet(final String key, final Object hashKey, final T value) {
+    public void hSet(final String key, final Object hashKey, final Object value) {
         redisTemplate.opsForHash().put(key, hashKey, value);
     }
 
@@ -266,7 +265,7 @@ public class RedisUtil {
      * @param timeout 过期时间（毫秒）
      * @return 设置过期时间的结果
      */
-    public <T> Boolean hSet(final String key, final Object hashKey, final T value, final Integer timeout) {
+    public Boolean hSet(final String key, final Object hashKey, final Object value, final Integer timeout) {
         redisTemplate.opsForHash().put(key, hashKey, value);
         return expire(key, timeout);
     }
@@ -277,7 +276,7 @@ public class RedisUtil {
      * @param key     缓存键
      * @param dataMap 缓存值
      */
-    public <T> void hSet(final String key, final Map<Object, T> dataMap) {
+    public void hSet(final String key, final Map<Object, Object> dataMap) {
         if (dataMap != null) {
             redisTemplate.opsForHash().putAll(key, dataMap);
         }
@@ -291,7 +290,7 @@ public class RedisUtil {
      * @param timeout 超时时间
      * @return 设置结果
      */
-    public <T> Boolean hSet(final String key, final Map<Object, T> dataMap, final Integer timeout) {
+    public Boolean hSet(final String key, final Map<Object, Object> dataMap, final Integer timeout) {
         if (dataMap != null) {
             redisTemplate.opsForHash().putAll(key, dataMap);
             return expire(key, timeout);
@@ -306,8 +305,8 @@ public class RedisUtil {
      * @param hKey 哈希表字段名
      * @return 哈希表指定字段的值
      */
-    public <T> T hGet(final String key, final Object hKey) {
-        BoundHashOperations<String, Object, T> boundHashOperations = redisTemplate.boundHashOps(key);
+    public Object hGet(final String key, final Object hKey) {
+        BoundHashOperations<String, Object, Object> boundHashOperations = redisTemplate.boundHashOps(key);
         return boundHashOperations.get(hKey);
     }
 
@@ -318,8 +317,8 @@ public class RedisUtil {
      * @param hKeys Hash键集合
      * @return Hash对象集合
      */
-    public <T> List<T> hGet(final String key, final Collection<Object> hKeys) {
-        BoundHashOperations<String, Object, T> boundHashOperations = redisTemplate.boundHashOps(key);
+    public List<Object> hGet(final String key, final Collection<Object> hKeys) {
+        BoundHashOperations<String, Object, Object> boundHashOperations = redisTemplate.boundHashOps(key);
         return boundHashOperations.multiGet(hKeys);
     }
 
@@ -328,8 +327,8 @@ public class RedisUtil {
      *
      * @param key 缓存键
      */
-    public <T> Map<Object, T> hGetAll(final String key) {
-        BoundHashOperations<String, Object, T> boundHashOperations = redisTemplate.boundHashOps(key);
+    public Map<Object, Object> hGetAll(final String key) {
+        BoundHashOperations<String, Object, Object> boundHashOperations = redisTemplate.boundHashOps(key);
         return boundHashOperations.entries();
     }
 
@@ -339,8 +338,8 @@ public class RedisUtil {
      * @param key     Redis 键
      * @param hashKey 哈希表字段
      */
-    public <T> void hDel(final String key, final Object... hashKey) {
-        BoundHashOperations<String, Object, T> boundHashOperations = redisTemplate.boundHashOps(key);
+    public void hDel(final String key, final Object[] hashKey) {
+        BoundHashOperations<String, Object, Object> boundHashOperations = redisTemplate.boundHashOps(key);
         boundHashOperations.delete(hashKey);
     }
 
@@ -427,7 +426,7 @@ public class RedisUtil {
     }
 
 
-    /*
+    /**
      * 从Redis中获取以指定前缀开头的键的数量
      *
      * @param keyPrefix 键前缀

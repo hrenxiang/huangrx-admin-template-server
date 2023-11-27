@@ -1,14 +1,15 @@
 package com.huangrx.template.security.handler;
 
-import cn.huangrx.blogserver.response.BaseResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.huangrx.template.core.dto.ResponseDTO;
+import com.huangrx.template.exception.error.ErrorCode;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -23,7 +24,7 @@ public class UserLoginAuthenticationFailureHandler implements AuthenticationFail
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        BaseResponse<Object> body = BaseResponse.failed(exception.getMessage());
+        ResponseDTO<Object> body = ResponseDTO.failed(ErrorCode.Business.LOGIN_ERROR);
         final ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), body);
     }

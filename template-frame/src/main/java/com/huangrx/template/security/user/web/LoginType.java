@@ -1,4 +1,4 @@
-package com.huangrx.template.security.enums;
+package com.huangrx.template.security.user.web;
 
 import lombok.Getter;
 
@@ -12,9 +12,16 @@ import lombok.Getter;
 @Getter
 public enum LoginType {
 
+    /**
+     * 登录类型
+     */
     NORMAL("normal", "用户名密码登录(默认)"),
+
     REFRESH_TOKEN("refresh_token", "刷新令牌登录"),
-    WECHAT("wechat", "微信登录");
+
+    WECHAT("wechat", "微信登录")
+
+    ;
 
     private final String code;
     private final String desc;

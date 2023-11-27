@@ -1,10 +1,12 @@
 package com.huangrx.template.security.filter;
 
-import cn.huangrx.blogserver.security.domain.LoginRequest;
-import cn.huangrx.blogserver.security.enums.LoginType;
-import cn.huangrx.blogserver.security.provider.token.UserLoginNormalAuthenticationToken;
-import cn.huangrx.blogserver.security.provider.token.UserLoginWeXinAuthenticationToken;
-import cn.huangrx.blogserver.util.JacksonUtil;
+import com.huangrx.template.security.provider.token.UserLoginNormalAuthenticationToken;
+import com.huangrx.template.security.provider.token.UserLoginWeXinAuthenticationToken;
+import com.huangrx.template.security.user.base.LoginRequest;
+import com.huangrx.template.security.user.web.LoginType;
+import com.huangrx.template.utils.jackson.JacksonUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -16,8 +18,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -50,15 +50,13 @@ public class UserAuthenticationFilter extends AbstractAuthenticationProcessingFi
         }
 
         LoginRequest requestBody = getRequestBody(request);
-
-        // 主要用来判断 哪种方式登录，然后创建不同类型的authenticationToken，现在不需要
         String loginType = requestBody.getLoginType();
         AbstractAuthenticationToken authenticationToken;
         if (LoginType.REFRESH_TOKEN.getCode().equalsIgnoreCase(loginType)) {
-            authenticationToken = new UserLoginNormalAuthenticationToken(requestBody.getUsername(), requestBody.getPassword());
-        } else if (LoginType.WECHAT.getCode().equalsIgnoreCase(loginType)) {// 微信授权登录
+            authenticationToken = new UserLoginNormalAuthenticationToken(requestBody.getMobile(), requestBody.getPassword());
+        } else if (LoginType.WECHAT.getCode().equalsIgnoreCase(loginType)) {
             authenticationToken = new UserLoginWeXinAuthenticationToken(requestBody.getOpenId(), requestBody.getWxToken());
-        } else {// 手机号+密码 方式登录
+        } else {
             authenticationToken = new UserLoginNormalAuthenticationToken(requestBody.getMobile(), requestBody.getPassword());
         }
         authenticationToken.setDetails(authenticationDetailsSource.buildDetails(request));

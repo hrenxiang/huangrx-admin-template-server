@@ -1,4 +1,4 @@
-package com.huangrx.template.security.entity;
+package com.huangrx.template.security.user.base;
 
 import lombok.Data;
 

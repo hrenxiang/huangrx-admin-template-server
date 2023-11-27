@@ -1,13 +1,14 @@
 package com.huangrx.template.security.handler;
 
-import cn.huangrx.blogserver.response.BaseResponse;
 import cn.hutool.json.JSONUtil;
+import com.huangrx.template.core.dto.ResponseDTO;
+import com.huangrx.template.exception.error.ErrorCode;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -25,7 +26,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler{
         response.setHeader("Cache-Control","no-cache");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().println(JSONUtil.parse(BaseResponse.forbidden(e.getMessage())));
+        response.getWriter().println(JSONUtil.parse(ResponseDTO.failed(ErrorCode.Business.PERMISSION_NOT_ALLOWED_TO_OPERATE)));
         response.getWriter().flush();
     }
 }

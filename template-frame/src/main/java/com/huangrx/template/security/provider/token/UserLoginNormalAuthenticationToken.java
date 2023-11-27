@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
 import java.util.Collection;
 
 /**
@@ -18,6 +19,7 @@ import java.util.Collection;
 @Slf4j
 public class UserLoginNormalAuthenticationToken extends AbstractAuthenticationToken {
 
+    @Serial
     private static final long serialVersionUID = -3979496385548009649L;
 
     private final Object principal;
@@ -34,7 +36,8 @@ public class UserLoginNormalAuthenticationToken extends AbstractAuthenticationTo
         super(null);
         this.principal = principal;
         this.credentials = credentials;
-        this.setAuthenticated(false); // 是否已经认证，false  , 在后续provider 中认证通过设置为 true
+        // 是否已经认证，false  , 在后续provider 中认证通过设置为 true
+        this.setAuthenticated(false);
         log.info("UserLoginNormalAuthenticationToken ------ 认证前构造AuthenticationToken信息");
     }
 
@@ -48,7 +51,7 @@ public class UserLoginNormalAuthenticationToken extends AbstractAuthenticationTo
     public UserLoginNormalAuthenticationToken(Object principal, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
-        super.setAuthenticated(true); // 是否已经认证，true
+        super.setAuthenticated(true);
         log.info("UserLoginNormalAuthenticationToken ------ 认证完成调用");
     }
 

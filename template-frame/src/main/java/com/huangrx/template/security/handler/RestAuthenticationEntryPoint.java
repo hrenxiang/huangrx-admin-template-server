@@ -1,13 +1,14 @@
 package com.huangrx.template.security.handler;
 
-import cn.huangrx.blogserver.response.BaseResponse;
 import cn.hutool.json.JSONUtil;
+import com.huangrx.template.core.dto.ResponseDTO;
+import com.huangrx.template.exception.error.ErrorCode;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -23,7 +24,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setHeader("Cache-Control","no-cache");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().println(JSONUtil.parse(BaseResponse.unauthorized(authException.getMessage())));
+        response.getWriter().println(JSONUtil.parse(ResponseDTO.failed(ErrorCode.Business.LOGIN_UNAUTHORIZED)));
         response.getWriter().flush();
     }
 }

@@ -1,7 +1,9 @@
 package com.huangrx.template.security.config;
 
-import cn.huangrx.blogserver.module.user.service.IUserService;
-import cn.huangrx.blogserver.redis.service.RedisService;
+import com.huangrx.template.cache.RedisUtil;
+import com.huangrx.template.security.user.service.SystemLoginService;
+import com.huangrx.template.service.ISysUserService;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,7 @@ import java.util.Objects;
  * @since 2023/4/26 11:42
  */
 @Slf4j
+@Getter
 public class InjectionSourceConfig {
 
     /**
@@ -27,12 +30,12 @@ public class InjectionSourceConfig {
     /**
      * 外部实现的认证 service
      */
-    private IUserService userService;
+    private SystemLoginService loginService;
 
     /**
      * 外部封装的 Redis操作类
      */
-    private RedisService redisService;
+    private RedisUtil redisUtil;
 
     /**
      * 无参构造私有化，单例模式创建
@@ -58,15 +61,6 @@ public class InjectionSourceConfig {
     }
 
     /**
-     * 获取配置的密码验证工具
-     *
-     * @return PasswordEncoder
-     */
-    public PasswordEncoder getPasswordEncoder() {
-        return passwordEncoder;
-    }
-
-    /**
      * 设置密码验证工具
      *
      * @param passwordEncoder 密码验证工具
@@ -82,36 +76,18 @@ public class InjectionSourceConfig {
     }
 
     /**
-     * 获取用户操作 Service
-     *
-     * @return IUserService
-     */
-    public IUserService getUserService() {
-        return userService;
-    }
-
-    /**
      * 用户操作层注入
      */
-    public void setUserService(IUserService userService) {
-        this.userService = userService;
-        log.info("InjectionSourceConfig ------ 配置用户实现层 IUserService");
-    }
-
-    /**
-     * 获取Redis操作类
-     *
-     * @return Redis Bean
-     */
-    public RedisService getRedisService() {
-        return redisService;
+    public void setLoginService(SystemLoginService loginService) {
+        this.loginService = loginService;
+        log.info("InjectionSourceConfig ------ 配置用户实现层 SystemLoginService");
     }
 
     /**
      * RedisService 注入
      */
-    public void setRedisService(RedisService redisService) {
-        this.redisService = redisService;
-        log.info("InjectionSourceConfig ------ 配置缓存实现层 RedisService");
+    public void setRedisUtil(RedisUtil redisUtil) {
+        this.redisUtil = redisUtil;
+        log.info("InjectionSourceConfig ------ 配置缓存实现层 RedisUtil");
     }
 }

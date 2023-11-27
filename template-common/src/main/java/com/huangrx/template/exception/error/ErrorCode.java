@@ -72,7 +72,7 @@ public enum ErrorCode implements IErrorCode {
 
         PERMISSION_FORBIDDEN_TO_MODIFY_ADMIN(10101, "不允许修改管理员的信息", "Business.FORBIDDEN_TO_MODIFY_ADMIN"),
 
-        PERMISSION_NOT_ALLOWED_TO_OPERATE(10202, "没有权限进行此操作，请联系管理员", "Business.NO_PERMISSION_TO_OPERATE"),
+        PERMISSION_NOT_ALLOWED_TO_OPERATE(10102, "没有权限进行此操作，请联系管理员", "Business.NO_PERMISSION_TO_OPERATE"),
 
         // ----------------------------- LOGIN -----------------------------------------
 
@@ -85,6 +85,10 @@ public enum ErrorCode implements IErrorCode {
         LOGIN_CAPTCHA_CODE_EXPIRE(10204, "验证码过期", "Business.LOGIN_CAPTCHA_CODE_EXPIRE"),
 
         LOGIN_CAPTCHA_CODE_NULL(10205, "验证码为空", "Business.LOGIN_CAPTCHA_CODE_NULL"),
+
+        LOGIN_UNAUTHORIZED(10206, "暂未登录或登录已过期，请重新登录", "Business.LOGIN_UNAUTHORIZED"),
+
+        LOGIN_TOKEN_PARSE_ERROR(10207, "身份验证失败", "Business.LOGIN_TOKEN_PARSE_ERROR"),
 
         // ----------------------------- UPLOAD -----------------------------------------
 

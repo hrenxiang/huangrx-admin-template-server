@@ -1,4 +1,4 @@
-package com.huangrx.template.redis;
+package com.huangrx.template.cache;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

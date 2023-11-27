@@ -1,6 +1,6 @@
 package com.huangrx.template.security.util;
 
-import com.huangrx.template.security.entity.SecurityUser;
+import com.huangrx.template.security.user.base.SecurityUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,31 +15,8 @@ import java.util.Objects;
  */
 public class SecurityUtil {
 
-    /**
-     * 获取当前用户名
-     *
-     * @return 用户名
-     */
-    public static String getMobile(Authentication authentication) {
-        if (Objects.isNull(authentication)) {
-            return null;
-        }
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof UserDetails) {
-            return ((SecurityUser) principal).getMobile();
-        } else if (principal != null) {
-            return principal.toString();
-        }
 
-        return null;
-    }
+    public String getCacheKey(Authentication authentication) {
 
-    /**
-     * 获取当前用户手机号
-     * @return 用户名
-     */
-    public static String getMobile() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return getMobile(authentication);
     }
 }

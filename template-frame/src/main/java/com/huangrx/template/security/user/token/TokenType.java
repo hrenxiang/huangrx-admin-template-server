@@ -1,4 +1,4 @@
-package com.huangrx.template.security.enums;
+package com.huangrx.template.security.user.token;
 
 import lombok.Getter;
 

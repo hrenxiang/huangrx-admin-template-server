@@ -1,21 +1,22 @@
-package com.huangrx.template.security.vo;
+package com.huangrx.template.security.user.token;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
 
 /**
- * TokenVO
+ * TokenDTO
  *
  * @author   huangrx
  * @since   2023-04-25 22:57
  */
-@Getter
+@Data
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TokenVO {
+public class TokenDTO {
+
     private String accessToken;
 
     private String refreshToken;

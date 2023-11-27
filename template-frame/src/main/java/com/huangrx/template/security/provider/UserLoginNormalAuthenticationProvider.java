@@ -1,13 +1,16 @@
 package com.huangrx.template.security.provider;
 
-import cn.huangrx.blogserver.exception.ApiException;
-import cn.huangrx.blogserver.exception.authentication.UserNormalLoginException;
-import cn.huangrx.blogserver.module.user.entity.UserEntity;
-import cn.huangrx.blogserver.module.user.service.IUserService;
-import cn.huangrx.blogserver.security.config.InjectionSourceConfig;
-import cn.huangrx.blogserver.security.entity.SecurityUser;
-import cn.huangrx.blogserver.security.provider.token.UserLoginNormalAuthenticationToken;
-import cn.huangrx.blogserver.util.CodecUtil;
+import cn.hutool.core.util.IdUtil;
+import com.huangrx.template.exception.ApiException;
+import com.huangrx.template.exception.error.ErrorCode;
+import com.huangrx.template.po.SysUser;
+import com.huangrx.template.security.config.InjectionSourceConfig;
+import com.huangrx.template.security.user.base.SecurityUser;
+import com.huangrx.template.security.provider.token.UserLoginNormalAuthenticationToken;
+import com.huangrx.template.security.user.service.SystemLoginService;
+import com.huangrx.template.security.user.web.SystemLoginUser;
+import com.huangrx.template.service.ISysUserService;
+import com.huangrx.template.utils.codec.CodecUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -31,11 +34,11 @@ public class UserLoginNormalAuthenticationProvider implements AuthenticationProv
 
     private final PasswordEncoder passwordEncoder;
 
-    private final IUserService userService;
+    private final SystemLoginService loginService;
 
     public UserLoginNormalAuthenticationProvider() {
         this.passwordEncoder = InjectionSourceConfig.instance().getPasswordEncoder();
-        this.userService = InjectionSourceConfig.instance().getUserService();
+        this.loginService = InjectionSourceConfig.instance().getLoginService();
     }
 
 
@@ -51,27 +54,25 @@ public class UserLoginNormalAuthenticationProvider implements AuthenticationProv
         log.info("UserLoginNormalAuthenticationProvider ------ 处理用户名密码登录请求");
         UserLoginNormalAuthenticationToken authenticationToken = (UserLoginNormalAuthenticationToken) authentication;
         String mobile = (String) authenticationToken.getPrincipal();
-        UserEntity userEntity = userService.loadUserByMobile(mobile);
-        if (Objects.isNull(userEntity)) {
-            throw new UsernameNotFoundException(mobile);
+        SystemLoginUser loginUser = loginService.loadUserByMobile(mobile);
+        if (Objects.isNull(loginUser)) {
+            throw new ApiException(ErrorCode.Business.USER_NON_EXIST);
         }
 
         try {
             String encodePassword = authenticationToken.getCredentials().toString();
             String decodePassword = CodecUtil.AESDecode(encodePassword, "itMCaD7HcfAnia5c");
-            if (!passwordEncoder.matches(decodePassword, userEntity.getPassword())) {
-                throw new UserNormalLoginException(mobile);
+            if (!passwordEncoder.matches(decodePassword, loginUser.getPassword())) {
+                throw new ApiException(ErrorCode.Business.LOGIN_WRONG_USER_PASSWORD);
             }
-        } catch (UserNormalLoginException | UsernameNotFoundException e) {
-            throw e;
         } catch (Exception e) {
-            throw new ApiException("登录验证失败", e);
+            throw new ApiException(ErrorCode.Business.LOGIN_ERROR, "加解密失败");
         }
 
-        List<GrantedAuthority> authorities = userService.acquireUserAuthoritiesById(userEntity.getId());
-
-        UserDetails userDetails = new SecurityUser(userEntity.getId(), userEntity.getUsername(), userEntity.getPassword(), userEntity.getMobile(), authorities);
-        UserLoginNormalAuthenticationToken authenticationResult = new UserLoginNormalAuthenticationToken(userDetails, userDetails.getAuthorities());
+        List<GrantedAuthority> authorities = loginService.acquireUserAuthoritiesById(loginUser.getUserId());
+        loginUser.setAuthorities(authorities);
+        loginUser.setCacheKey(IdUtil.fastUUID());
+        UserLoginNormalAuthenticationToken authenticationResult = new UserLoginNormalAuthenticationToken(loginUser, loginUser.getAuthorities());
         authenticationResult.setDetails(authenticationToken.getDetails());
         log.info("UserLoginNormalAuthenticationProvider ------ 处理用户名密码登录请求完成");
         return authenticationResult;

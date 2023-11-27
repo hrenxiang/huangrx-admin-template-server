@@ -40,6 +40,7 @@
         <commons.io.version>2.15.0</commons.io.version>
         <commons.fileupload.version>1.5</commons.fileupload.version>
         <commons.collections4.version>4.4</commons.collections4.version>
+        <java-jwt.version>4.4.0</java-jwt.version>
     </properties>
 
     <dependencies>
@@ -82,6 +83,20 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- 编解码常用工具类 版本springboot控制 -->
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+
+            <!-- JWT常用工具类 -->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
+            </dependency>
+
             <!-- io常用工具类 -->
             <dependency>
                 <groupId>commons-io</groupId>

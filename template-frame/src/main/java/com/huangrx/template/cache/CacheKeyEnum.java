@@ -1,4 +1,4 @@
-package com.huangrx.template.redis;
+package com.huangrx.template.cache;
 
 import java.util.concurrent.TimeUnit;
 

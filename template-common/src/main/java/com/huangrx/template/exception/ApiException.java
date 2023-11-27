@@ -1,6 +1,6 @@
 package com.huangrx.template.exception;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.huangrx.template.exception.error.IErrorCode;
 import com.huangrx.template.utils.i18n.MessageUtils;
 import lombok.Data;
@@ -21,11 +21,11 @@ import java.util.HashMap;
 @EqualsAndHashCode(callSuper = true)
 public class ApiException extends RuntimeException {
 
-    protected IErrorCode errorCode;
+    private IErrorCode errorCode;
 
-    protected String message;
+    private String message;
 
-    protected String i18nMessage;
+    private String i18nMessage;
 
     /**
      * 如果有一些特殊的数据  可以放在这个payload里面
@@ -33,7 +33,7 @@ public class ApiException extends RuntimeException {
      * 比如你做了一个大批量操作，操作ID为1~10的实体， 其中1~5成功   6~10失败
      * 你可以将这些相关信息放在这个payload中
      */
-    protected HashMap<String, Object> payload;
+    private HashMap<String, Object> payload;
 
     public ApiException(IErrorCode errorCode) {
         fillErrorCode(errorCode);
@@ -55,9 +55,20 @@ public class ApiException extends RuntimeException {
         fillErrorCode(errorCode, args);
     }
 
+    public ApiException(String message, Throwable e) {
+        super(message, e);
+        this.message = message;
+    }
+
+    public ApiException(String message, IErrorCode errorCode, Throwable e) {
+        super(message, e);
+        this.message = message;
+        this.errorCode = errorCode;
+    }
+
     private void fillErrorCode(IErrorCode errorCode, Object... args) {
         this.errorCode = errorCode;
-        this.message = StrUtil.format(errorCode.message(), args);
+        this.message = CharSequenceUtil.format(errorCode.message(), args);
 
         try {
             this.i18nMessage = MessageUtils.message(errorCode.i18nKey(), args);

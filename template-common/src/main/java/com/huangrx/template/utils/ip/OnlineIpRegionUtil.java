@@ -3,8 +3,7 @@ package com.huangrx.template.utils.ip;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
-import com.agileboot.common.config.AgileBootConfig;
-import com.agileboot.common.utils.jackson.JacksonUtil;
+import com.huangrx.template.utils.jackson.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
