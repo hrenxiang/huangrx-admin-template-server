@@ -17,7 +17,7 @@ public class ResponseDTO<T> {
     /**
      * 状态码
      */
-    private long code;
+    private Long code;
     /**
      * 描述信息
      */

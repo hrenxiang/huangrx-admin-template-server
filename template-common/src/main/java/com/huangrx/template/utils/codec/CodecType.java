@@ -32,7 +32,7 @@ public enum CodecType {
 
     DES("DES"),
 
-    AES("DES");
+    AES("AES");
 
     private final String value;
 
