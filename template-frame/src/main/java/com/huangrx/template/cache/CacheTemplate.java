@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Optional;
 
 /**
- * 缓存接口实现类 （添加一层guava可构成三级缓存，一级redis，二级guava，三级数据库）
+ * 缓存接口实现类模版
  *
  * @author valarchie
  */
