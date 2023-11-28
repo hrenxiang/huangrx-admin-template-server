@@ -46,4 +46,8 @@ public enum CacheKeyEnum {
         return timeUnit;
     }
 
+    public static String generateKey(CacheKeyEnum cacheKeyEnum, Object id) {
+        return cacheKeyEnum.key() + id;
+    }
+
 }

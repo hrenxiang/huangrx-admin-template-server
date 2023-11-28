@@ -82,8 +82,8 @@ public class JacksonUtil {
     public static ObjectMapper initMapperConfig(ObjectMapper objectMapper) {
         String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
         objectMapper.setDateFormat(new SimpleDateFormat(dateTimeFormat));
-        //配置序列化级别 不设置则不忽略空值，设置则忽略相应值 Include.NON_DEFAULT 属性为默认值不序列化   ｜ Include.NON_EMPTY 属性为 空（“”） 或者为 NULL 都不序列化 ｜ Include.NON_NULL 属性为NULL 不序列化
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+        //配置序列化级别 不设置则不忽略空值，设置则忽略相应值 JsonInclude.Include.NON_DEFAULT 属性为默认值不序列化   ｜ Include.NON_EMPTY 属性为 空（“”） 或者为 NULL 都不序列化 ｜ Include.NON_NULL 属性为NULL 不序列化
+        objectMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
         //配置JSON缩进支持
         objectMapper.configure(SerializationFeature.INDENT_OUTPUT, false);
         //允许单个数值当做数组处理

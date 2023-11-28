@@ -2,6 +2,7 @@ package com.huangrx.template.core.dto;
 
 import com.huangrx.template.exception.ApiException;
 import com.huangrx.template.exception.error.ErrorCode;
+import com.huangrx.template.exception.error.IErrorCode;
 import lombok.Data;
 
 /**
@@ -72,7 +73,7 @@ public class ResponseDTO<T> {
      *
      * @param errorCode 错误码
      */
-    public static <T> ResponseDTO<T> failed(ErrorCode errorCode) {
+    public static <T> ResponseDTO<T> failed(IErrorCode errorCode) {
         return new ResponseDTO<>(errorCode.code(), errorCode.message(), null);
     }
 
@@ -82,7 +83,7 @@ public class ResponseDTO<T> {
      * @param errorCode 错误码
      * @param data      携带的数据
      */
-    public static <T> ResponseDTO<T> failed(ErrorCode errorCode, T data) {
+    public static <T> ResponseDTO<T> failed(IErrorCode errorCode, T data) {
         return new ResponseDTO<>(errorCode.code(), errorCode.message(), data);
     }
 
