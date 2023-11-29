@@ -43,6 +43,7 @@
         <commons.collections4.version>4.4</commons.collections4.version>
         <java-jwt.version>4.4.0</java-jwt.version>
         <ip2region.version>2.7.0</ip2region.version>
+        <kaptcha.version>2.3.2</kaptcha.version>
     </properties>
 
     <dependencies>
@@ -86,6 +87,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- 验证码 -->
+            <dependency>
+                <groupId>com.github.penggle</groupId>
+                <artifactId>kaptcha</artifactId>
+                <version>${kaptcha.version}</version>
+            </dependency>
+
             <!-- ip转地区 -->
             <dependency>
                 <groupId>org.lionsoul</groupId>

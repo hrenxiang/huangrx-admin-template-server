@@ -1,7 +1,29 @@
+# 基础公用的配置参数放置在这份yml中
+# 项目相关配置
+template:
+  # 名称
+  name: HuangrxTemplate
+  # 版本
+  version: 1.0.0
+  # 版权年份
+  copyright-year: 2023
+  # 实例演示开关
+  demo-enabled: true
+  # 获取ip地址开关
+  addressEnabled: false
+  # 验证码类型 math 数组计算 char 字符验证
+  captchaType: math
+  # 对应的公钥放在前端项目中的utils/rsaUtils类中
+  rsaPrivateKey: MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAJFLb9y8ZAHqAWkOrSdBYcZdk0Nve+BXKyNmKXC67osudNPZWCHjr9/8ZzHxe33nGm4DJhJQdexzUivBhje/eFrKHEStNmUcSbkf1M5oWDLvjdLEeGYCJuB7mkaustVUw+c0ofblYl+cF5FHDiMjvP599Vq0QsFZzlPm5y8hULLPAgMBAAECgYAA6zMXCQq22bBIuZZQ2BQmAPGxguJfO9sXkDvWi6viyaN7LXXPy6g9rgWKgkkTsDwNWrAiWvKiNT3HMKmsllpuDeyYjLVm6rA8+dixtDwdrEER7/LfKwBIWLU7XyyZslQduoXc7t7JjtTh1qtlqUqOiG+1BNclyLTR72Z04kjwPQJBALeDmmOFfkUYEHl/2BW2R5vNvxw2J1/mJK8cA6wC/1kGLUX8wI2CYN9hw+O/kVkUWlk5Ft61zzcm/7+Pe7L4mEsCQQDKrzO4xD4rEh6c5L5ruNG7GUab+0siYlVd9o0aeUJOeRTXn/mpF7d5yhUpY5wtSDUkcHwqv+03bm+dUURzdoUNAkEAlSXQhLIqPd2hBh5xcLQE3wwJFtSsi7RwfCE4msSU47WxdgBGPryIHwVGQAOiDdQM2hccD0WUdC6uDPKAhqSkoQJBAI3tycYkhXQbqBwtgbplHVhrBqrLeX2GZkj6ESzspKXW2+VyPJ1P4kcCX3cwLXj4C16M9iXpZ+9dAgOjmM9RuzECQA1lT4vliW0HsjFEgGRLguhob3mKU7R8q5YJgoxbyu9Utn3361tYqMrYF9jqreKBkcjxr3PsYw4J4wcdFf1MPqI=
+  # 是否检查 i18n 资源文件（messages.properties）是否都有对应的键值对
+  checkI18nKey: false
+  # 日志追踪请求ID的key
+  traceRequestIdKey: HT-RequestId
+
 # 应用服务 WEB 访问端口
 server:
   # 端口号
-  port: 8080
+  port: 19096
   servlet:
     # 应用的访问路径
     context-path: /template-api

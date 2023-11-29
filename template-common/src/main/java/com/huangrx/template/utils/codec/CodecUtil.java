@@ -17,7 +17,7 @@ import java.util.Base64;
 import java.util.Objects;
 
 /**
- * 加解密工具类
+ * 加解密工具类（可以直接用Hutool的SecureUtil）
  *
  * @author hrenxiang
  * @since 2022/6/19 18:08
@@ -25,6 +25,8 @@ import java.util.Objects;
 @Slf4j
 @UtilityClass
 public class CodecUtil {
+
+
 
     // ========================================== 单向散列加密算法（不可逆） =======================================================
 

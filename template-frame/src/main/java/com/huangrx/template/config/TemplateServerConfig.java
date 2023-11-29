@@ -34,28 +34,33 @@ public class TemplateServerConfig {
     /**
      * 实例演示开关
      */
-    private static boolean demoEnabled;
+    private boolean demoEnabled;
 
     /**
      * 上传路径
      */
-    private static String fileBaseDir;
+    private String fileBaseDir;
 
     /**
      * 获取地址开关
      */
-    private static boolean addressEnabled;
+    private boolean addressEnabled;
 
     /**
      * 验证码类型
      */
-    private static String captchaType;
+    private String captchaType;
 
     /**
      * rsa private key  静态属性的注入！！ set方法一定不能是static 方法
      */
-    private static String rsaPrivateKey;
+    private String rsaPrivateKey;
 
-    private static String apiPrefix;
+    private String apiPrefix;
+
+    /**
+     * 日志追踪请求ID的key
+     */
+    private String traceRequestIdKey;
 
 }
