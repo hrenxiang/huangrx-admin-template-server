@@ -212,7 +212,7 @@ public enum ErrorCode implements IErrorCode {
 
             String errorTypeName = this.getClass().getSimpleName();
             Assert.isTrue(i18nKey != null && i18nKey.startsWith(errorTypeName),
-                    String.format(Constants.I18N_KEY_ERROR_MESSAGE, errorTypeName, errorTypeName, name()));
+                    String.format(Constants.Message.I18N_KEY_ERROR_MESSAGE, errorTypeName, errorTypeName, name()));
             this.code = code;
             this.msg = msg;
             this.i18nKey = i18nKey;
@@ -257,7 +257,7 @@ public enum ErrorCode implements IErrorCode {
 
             String errorTypeName = this.getClass().getSimpleName();
             Assert.isTrue(i18nKey != null && i18nKey.startsWith(errorTypeName),
-                    String.format(Constants.I18N_KEY_ERROR_MESSAGE, errorTypeName, errorTypeName, name()));
+                    String.format(Constants.Message.I18N_KEY_ERROR_MESSAGE, errorTypeName, errorTypeName, name()));
             this.code = code;
             this.msg = msg;
             this.i18nKey = i18nKey;
@@ -320,7 +320,7 @@ public enum ErrorCode implements IErrorCode {
 
             String errorTypeName = this.getClass().getSimpleName();
             Assert.isTrue(i18nKey != null && i18nKey.startsWith(errorTypeName),
-                    String.format(Constants.I18N_KEY_ERROR_MESSAGE, errorTypeName, errorTypeName, name()));
+                    String.format(Constants.Message.I18N_KEY_ERROR_MESSAGE, errorTypeName, errorTypeName, name()));
             this.code = code;
             this.msg = msg;
             this.i18nKey = i18nKey;
@@ -381,7 +381,7 @@ public enum ErrorCode implements IErrorCode {
 
             String errorTypeName = this.getClass().getSimpleName();
             Assert.isTrue(i18nKey != null && i18nKey.startsWith(errorTypeName),
-                    String.format(Constants.I18N_KEY_ERROR_MESSAGE, errorTypeName, errorTypeName, name()));
+                    String.format(Constants.Message.I18N_KEY_ERROR_MESSAGE, errorTypeName, errorTypeName, name()));
             this.code = code;
             this.msg = msg;
             this.i18nKey = i18nKey;
