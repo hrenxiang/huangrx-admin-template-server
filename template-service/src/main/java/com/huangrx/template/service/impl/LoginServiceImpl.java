@@ -2,6 +2,7 @@ package com.huangrx.template.service.impl;
 
 import com.huangrx.template.security.service.ILoginService;
 import com.huangrx.template.user.base.SystemLoginUser;
+import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,12 @@ public class LoginServiceImpl implements ILoginService {
 
     @Override
     public SystemLoginUser loadUserByUsername(String username) {
-        return null;
+        return new SystemLoginUser();
     }
 
     @Override
     public List<GrantedAuthority> getAuthorities(Long userId) {
-        return null;
+        return Collections.emptyList();
     }
 
 }

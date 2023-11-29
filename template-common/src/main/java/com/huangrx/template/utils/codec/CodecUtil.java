@@ -1,5 +1,6 @@
 package com.huangrx.template.utils.codec;
 
+import com.huangrx.template.utils.hex.HexUtil;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,10 +11,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.security.AlgorithmParameters;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -231,7 +230,7 @@ public class CodecUtil {
         for (int i = 0; i < bs.length; i++) {
             bs[i] = (byte) ((bs[i]) ^ key.hashCode());
         }
-        return parseByte2HexStr(bs);
+        return HexUtil.binaryToHex(bs);
     }
 
     /**
@@ -242,7 +241,7 @@ public class CodecUtil {
      * @return 加密后的数据
      */
     public static String xorDecode(String res, String key) {
-        byte[] bs = parseHexStr2Byte(res);
+        byte[] bs = HexUtil.hexToBinary(res);
         for (int i = 0; i < Objects.requireNonNull(bs).length; i++) {
             bs[i] = (byte) ((bs[i]) ^ key.hashCode());
         }
@@ -256,7 +255,7 @@ public class CodecUtil {
      * @param key 秘钥
      * @return 加密后的数据
      */
-    public static int xor(int res, String key) {
+    public static Integer xor(int res, String key) {
         return res ^ key.hashCode();
     }
 
@@ -327,7 +326,7 @@ public class CodecUtil {
             if (Boolean.TRUE.equals(isBase64)) {
                 return Base64.getEncoder().encodeToString(md.digest(resBytes));
             }
-            return CodecUtil.parseByte2HexStr(md.digest(resBytes));
+            return HexUtil.binaryToHex(md.digest(resBytes));
         } catch (Exception e) {
             throw new CodecException("使用MessageDigest进行单向加密失败！", e);
         }
@@ -357,7 +356,7 @@ public class CodecUtil {
             if (Boolean.TRUE.equals(isBase64)) {
                 return Base64.getEncoder().encodeToString(result);
             }
-            return CodecUtil.parseByte2HexStr(result);
+            return HexUtil.binaryToHex(result);
         } catch (Exception e) {
             throw new CodecException("使用KeyGenerator进行单向/双向加密失败！", e);
         }
@@ -387,7 +386,11 @@ public class CodecUtil {
             Cipher cipher = Cipher.getInstance(resultAlgorithm);
             if (!CodecMode.ECB.name().equals(mode)) {
                 AlgorithmParameters parameters = AlgorithmParameters.getInstance(algorithm);
-                parameters.init(new IvParameterSpec(key.getBytes()));
+                // 创建一个 SecureRandom 实例
+                SecureRandom secureRandom = SecureRandom.getInstance(algorithm);
+                // 生成一个 16 字节的 IV
+                secureRandom.nextBytes(keyBytes);
+                parameters.init(new IvParameterSpec(keyBytes));
                 if (Boolean.TRUE.equals(isEncode)) {
                     cipher.init(Cipher.ENCRYPT_MODE, sks, parameters);
                     byte[] resBytes = res.getBytes(StandardCharsets.UTF_8);
@@ -415,39 +418,14 @@ public class CodecUtil {
     }
 
     /**
-     * 将二进制转换成16进制字符串
+     * 测试工具类使用 === 无其他作用
      *
-     * @param buf 字节数组
+     * @param args 参数
      */
-    public static String parseByte2HexStr(byte[] buf) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : buf) {
-            String hex = Integer.toHexString(b & 0xFF);
-            if (hex.length() == 1) {
-                hex = '0' + hex;
-            }
-            // 需要时，可以将16禁止字符串转换为全大写 hex.toUpperCase()
-            sb.append(hex);
-        }
-        return sb.toString();
-    }
-
-    /**
-     * 将16进制转换为二进制
-     *
-     * @param hexStr 16进制字符串
-     */
-    public static byte[] parseHexStr2Byte(String hexStr) {
-        if (hexStr.isEmpty()) {
-            return new byte[0];
-        }
-        byte[] result = new byte[hexStr.length() / 2];
-        for (int i = 0; i < hexStr.length() / 2; i++) {
-            int high = Integer.parseInt(hexStr.substring(i * 2, i * 2 + 1), 16);
-            int low = Integer.parseInt(hexStr.substring(i * 2 + 1, i * 2 + 2), 16);
-            result[i] = (byte) (high * 16 + low);
-        }
-        return result;
+    public static void main(String[] args) {
+        log.info(CodecUtil.aesEncode("123456", "itMCaD7HcfAnia5c"));
+        log.info(CodecUtil.aesDecode("8dXFmsI38cIpuiARXX09wA==", "itMCaD7HcfAnia5c"));
+        log.info(xor(123456, "huangrx").toString());
     }
 
 }

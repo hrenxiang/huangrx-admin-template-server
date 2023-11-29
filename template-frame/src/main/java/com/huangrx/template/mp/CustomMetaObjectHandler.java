@@ -1,6 +1,8 @@
 package com.huangrx.template.mp;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.huangrx.template.security.utils.SecurityUtils;
+import com.huangrx.template.user.base.SystemLoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
@@ -38,8 +40,6 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
         if (userId != null && metaObject.hasSetter(UPDATER_ID_FIELD)) {
             this.strictInsertFill(metaObject, UPDATER_ID_FIELD, Long.class, userId);
         }
-        // 在一些比较旧的版本，为填充字段设置值的API如下，3.3.0之后已经不建议使用
-        // this.setFieldValByName("updateTime", new Date(), metaObject);
     }
 
     @Override
@@ -53,7 +53,14 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
     }
 
     private Long getUserIdSafely() {
-        return null;
+        Long userId = null;
+        try {
+            SystemLoginUser loginUser = SecurityUtils.getSystemLoginUser();
+            userId = loginUser.getUserId();
+        } catch (Exception e) {
+            log.warn("can not find user in current thread.");
+        }
+        return userId;
     }
 
 }

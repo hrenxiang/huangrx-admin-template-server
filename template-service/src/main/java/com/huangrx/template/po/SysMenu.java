@@ -10,6 +10,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +26,7 @@ import lombok.Setter;
 @Setter
 @TableName("t_sys_menu")
 @ApiModel(value = "SysMenu对象", description = "菜单权限表")
+@EqualsAndHashCode(callSuper = true)
 public class SysMenu extends BaseEntity<SysMenu> {
 
     @Serial

@@ -42,7 +42,7 @@ import java.util.*;
  */
 @Slf4j
 public class JacksonUtil {
-    private static ObjectMapper mapper;
+    private static final ObjectMapper MAPPER;
 
     private static final Set<JsonReadFeature> JSON_READ_FEATURES_ENABLED = CollUtil.newHashSet(
             //允许在JSON中使用Java注释
@@ -66,7 +66,7 @@ public class JacksonUtil {
     static {
         try {
             //初始化
-            mapper = initMapper();
+            MAPPER = initMapper();
         } catch (Exception e) {
             throw new JacksonException("JacksonUtil 初始化失败", e);
         }
@@ -113,7 +113,7 @@ public class JacksonUtil {
     }
 
     public static ObjectMapper getObjectMapper() {
-        return mapper;
+        return MAPPER;
     }
 
     /**
@@ -121,7 +121,7 @@ public class JacksonUtil {
      */
     public static <V> V parseUrl(URL url, Class<V> type) {
         try {
-            return mapper.readValue(url, type);
+            return MAPPER.readValue(url, type);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_3, url.getPath(), type), e);
         }
@@ -132,7 +132,7 @@ public class JacksonUtil {
      */
     public static <V> V parseUrl(URL url, TypeReference<V> type) {
         try {
-            return mapper.readValue(url, type);
+            return MAPPER.readValue(url, type);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_3, url.getPath(), type), e);
         }
@@ -143,8 +143,8 @@ public class JacksonUtil {
      */
     public static <V> List<V> parseUrlToList(URL url, Class<V> type) {
         try {
-            CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, type);
-            return mapper.readValue(url, collectionType);
+            CollectionType collectionType = MAPPER.getTypeFactory().constructCollectionType(ArrayList.class, type);
+            return MAPPER.readValue(url, collectionType);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_3, url.getPath(), type), e);
         }
@@ -155,7 +155,7 @@ public class JacksonUtil {
      */
     public static <V> V parseInputStream(InputStream inputStream, Class<V> type) {
         try {
-            return mapper.readValue(inputStream, type);
+            return MAPPER.readValue(inputStream, type);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_1, type), e);
         }
@@ -166,7 +166,7 @@ public class JacksonUtil {
      */
     public static <V> V parseInputStream(InputStream inputStream, TypeReference<V> type) {
         try {
-            return mapper.readValue(inputStream, type);
+            return MAPPER.readValue(inputStream, type);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_1, type), e);
         }
@@ -177,8 +177,8 @@ public class JacksonUtil {
      */
     public static <V> List<V> parseInputStreamToList(InputStream inputStream, Class<V> type) {
         try {
-            CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, type);
-            return mapper.readValue(inputStream, collectionType);
+            CollectionType collectionType = MAPPER.getTypeFactory().constructCollectionType(ArrayList.class, type);
+            return MAPPER.readValue(inputStream, collectionType);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_1, type), e);
         }
@@ -189,7 +189,7 @@ public class JacksonUtil {
      */
     public static <V> V parseFile(File file, Class<V> type) {
         try {
-            return mapper.readValue(file, type);
+            return MAPPER.readValue(file, type);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_2, file.getPath(), type), e);
         }
@@ -200,7 +200,7 @@ public class JacksonUtil {
      */
     public static <V> V parseFile(File file, TypeReference<V> type) {
         try {
-            return mapper.readValue(file, type);
+            return MAPPER.readValue(file, type);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_2, file.getPath(), type), e);
         }
@@ -211,8 +211,8 @@ public class JacksonUtil {
      */
     public static <V> List<V> parseFileToList(File file, Class<V> type) {
         try {
-            CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, type);
-            return mapper.readValue(file, collectionType);
+            CollectionType collectionType = MAPPER.getTypeFactory().constructCollectionType(ArrayList.class, type);
+            return MAPPER.readValue(file, collectionType);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_2, file.getPath(), type), e);
         }
@@ -240,8 +240,8 @@ public class JacksonUtil {
             return null;
         }
         try {
-            JavaType javaType = mapper.getTypeFactory().constructType(type);
-            return mapper.readValue(json, javaType);
+            JavaType javaType = MAPPER.getTypeFactory().constructType(type);
+            return MAPPER.readValue(json, javaType);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_4, json, type), e);
         }
@@ -255,8 +255,8 @@ public class JacksonUtil {
             return Collections.emptyList();
         }
         try {
-            CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, type);
-            return mapper.readValue(json, collectionType);
+            CollectionType collectionType = MAPPER.getTypeFactory().constructCollectionType(ArrayList.class, type);
+            return MAPPER.readValue(json, collectionType);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_4, json, type), e);
         }
@@ -270,8 +270,8 @@ public class JacksonUtil {
             return Collections.emptyMap();
         }
         try {
-            MapType mapType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, Object.class);
-            return mapper.readValue(json, mapType);
+            MapType mapType = MAPPER.getTypeFactory().constructMapType(HashMap.class, String.class, Object.class);
+            return MAPPER.readValue(json, mapType);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_5, json), e);
         }
@@ -282,7 +282,7 @@ public class JacksonUtil {
      */
     public static <V> String toJson(V v) {
         try {
-            return mapper.writeValueAsString(v);
+            return MAPPER.writeValueAsString(v);
         } catch (JsonProcessingException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_6, v), e);
         }
@@ -293,7 +293,7 @@ public class JacksonUtil {
      */
     public static <V> String toJson(List<V> list) {
         try {
-            return mapper.writeValueAsString(list);
+            return MAPPER.writeValueAsString(list);
         } catch (JsonProcessingException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_6, list), e);
         }
@@ -304,7 +304,7 @@ public class JacksonUtil {
      */
     public static <V> String toJson(Map<String, V> map) {
         try {
-            return mapper.writeValueAsString(map);
+            return MAPPER.writeValueAsString(map);
         } catch (JsonProcessingException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_6, map), e);
         }
@@ -315,7 +315,7 @@ public class JacksonUtil {
      */
     public static <V> void toJson(String path, List<V> list) {
         try (Writer writer = new FileWriter(path, true)) {
-            mapper.writer().writeValues(writer).writeAll(list);
+            MAPPER.writer().writeValues(writer).writeAll(list);
         } catch (Exception e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_7, path, list), e);
         }
@@ -326,7 +326,7 @@ public class JacksonUtil {
      */
     public static <V> void toJson(String path, V v) {
         try (Writer writer = new FileWriter(path, true)) {
-            mapper.writer().writeValues(writer).write(v);
+            MAPPER.writer().writeValues(writer).write(v);
         } catch (Exception e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_8, path, v), e);
         }
@@ -455,6 +455,7 @@ public class JacksonUtil {
      * @return boolean, 默认为false
      */
     public static boolean getAsBoolean(String json, String key) {
+        String booleanStr = "1";
         if (StringUtils.isEmpty(json)) {
             return false;
         }
@@ -468,7 +469,7 @@ public class JacksonUtil {
             } else {
                 if (jsonNode.isTextual()) {
                     String textValue = jsonNode.textValue();
-                    if ("1".equals(textValue)) {
+                    if (booleanStr.equals(textValue)) {
                         return true;
                     } else {
                         return BooleanUtils.toBoolean(textValue);
@@ -514,7 +515,7 @@ public class JacksonUtil {
             if (null == jsonNode) {
                 return null;
             }
-            JavaType javaType = mapper.getTypeFactory().constructType(type);
+            JavaType javaType = MAPPER.getTypeFactory().constructType(type);
             return parseString(getAsString(jsonNode), javaType);
         } catch (Exception e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_17, json, key, type), e);
@@ -535,7 +536,7 @@ public class JacksonUtil {
             if (null == jsonNode) {
                 return Collections.emptyList();
             }
-            CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, type);
+            CollectionType collectionType = MAPPER.getTypeFactory().constructCollectionType(ArrayList.class, type);
             return parseString(getAsString(jsonNode), collectionType);
         } catch (Exception e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_17, json, key, type), e);
@@ -548,7 +549,7 @@ public class JacksonUtil {
      */
     public static JsonNode getAsJsonObject(String json, String key) {
         try {
-            JsonNode node = mapper.readTree(json);
+            JsonNode node = MAPPER.readTree(json);
             if (null == node) {
                 return null;
             }
@@ -564,7 +565,7 @@ public class JacksonUtil {
      */
     public static <V> String add(String json, String key, V value) {
         try {
-            JsonNode node = mapper.readTree(json);
+            JsonNode node = MAPPER.readTree(json);
             add(node, key, value);
             return node.toString();
         } catch (IOException e) {
@@ -607,7 +608,7 @@ public class JacksonUtil {
      */
     public static String remove(String json, String key) {
         try {
-            JsonNode node = mapper.readTree(json);
+            JsonNode node = MAPPER.readTree(json);
             ((ObjectNode) node).remove(key);
             return node.toString();
         } catch (IOException e) {
@@ -620,7 +621,7 @@ public class JacksonUtil {
      */
     public static <V> String update(String json, String key, V value) {
         try {
-            JsonNode node = mapper.readTree(json);
+            JsonNode node = MAPPER.readTree(json);
             ((ObjectNode) node).remove(key);
             add(node, key, value);
             return node.toString();
@@ -635,8 +636,8 @@ public class JacksonUtil {
      */
     public static String format(String json) {
         try {
-            JsonNode node = mapper.readTree(json);
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(node);
+            JsonNode node = MAPPER.readTree(json);
+            return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(node);
         } catch (IOException e) {
             throw new JacksonException(String.format(JacksonConstant.JSON_ERROR_22, json), e);
         }
@@ -648,7 +649,7 @@ public class JacksonUtil {
      */
     public static boolean isJson(String json) {
         try {
-            mapper.readTree(json);
+            MAPPER.readTree(json);
             return true;
         } catch (Exception e) {
             return false;

@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
 import java.util.Collection;
 
 /**
@@ -19,6 +20,9 @@ import java.util.Collection;
 @Slf4j
 @EqualsAndHashCode(callSuper = true)
 public class UserLoginNormalAuthenticationToken extends AbstractAuthenticationToken {
+
+    @Serial
+    private static final long serialVersionUID = 3152309248230179277L;
 
     private final Object principal;
 

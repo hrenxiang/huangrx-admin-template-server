@@ -20,7 +20,17 @@ import java.util.regex.Pattern;
 @Slf4j
 public class IpUtil {
 
-    public static final String INNER_IP_REGEX = "^(127\\.0\\.0\\.\\d{1,3})|(localhost)|(10\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(172\\.((1[6-9])|(2\\d)|(3[01]))\\.\\d{1,3}\\.\\d{1,3})|(192\\.168\\.\\d{1,3}\\.\\d{1,3})$";
+    public static final String INNER_IP_REGEX = "^(?:" +
+            "(127\\.0\\.0\\.\\d{1,3})" + // Loopback addresses
+            "|" +
+            "(localhost)" + // localhost
+            "|" +
+            "(10\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})" + // 10.x.x.x
+            "|" +
+            "(172\\.(?:1[6-9]|2\\d|3[01])\\.\\d{1,3}\\.\\d{1,3})" + // 172.[16-31].x.x
+            "|" +
+            "(192\\.168\\.\\d{1,3}\\.\\d{1,3})" + // 192.168.x.x
+            ")$";
 
     public static final Pattern INNER_IP_PATTERN = Pattern.compile(INNER_IP_REGEX);
 

@@ -83,7 +83,7 @@ public class TokenUtils {
                 //签发对象
                 .withAudience(SecurityUtils.getSystemLoginUser().getUsername())
                 //登录类型
-                .withClaim(TokenConfig.getTokenTypeKey(), tokenType.getCode())
+                .withClaim(TokenConfig.getTokenTypeKey(), tokenType.value())
                 // 用户信息缓存的key值
                 .withClaim(TokenConfig.getLoginUserKey(), SecurityUtils.getSystemLoginUser().getCacheKey())
                 //发行时间
@@ -106,7 +106,7 @@ public class TokenUtils {
                 //签发对象
                 .withAudience(SecurityUtils.getSystemLoginUser().getUsername())
                 //登录类型
-                .withClaim(TokenConfig.getTokenTypeKey(), tokenType.getCode())
+                .withClaim(TokenConfig.getTokenTypeKey(), tokenType.value())
                 // 用户信息缓存的key值
                 .withClaim(TokenConfig.getLoginUserKey(), SecurityUtils.getSystemLoginUser().getCacheKey())
                 //发行时间
@@ -207,6 +207,6 @@ public class TokenUtils {
     }
 
     public void refreshToken(SystemLoginUser loginUser) {
-
+        log.info("refresh token, {}", loginUser);
     }
 }

@@ -36,16 +36,17 @@ public enum CodecKeySize {
      * @return 如果密钥大小符合要求，则返回true；否则返回false
      */
     public static boolean verifyKeySize(String key, String algorithm) {
+        int bitsInByte = 8;
         byte[] bytes = key.getBytes(StandardCharsets.UTF_8);
 
         if (CodecType.AES.getValue().equals(algorithm)) {
             for (CodecKeySize keySize : CodecKeySize.values()) {
-                if (bytes.length == (keySize.value / 8)) {
+                if (bytes.length == (keySize.value / bitsInByte)) {
                     return Boolean.TRUE;
                 }
             }
         } else {
-            if (bytes.length == (CodecKeySize.SIX_FOUR.value / 8)) {
+            if (bytes.length == (CodecKeySize.SIX_FOUR.value / bitsInByte)) {
                 return Boolean.TRUE;
             }
         }

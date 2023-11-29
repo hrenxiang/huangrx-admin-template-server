@@ -5,13 +5,14 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.huangrx.template.core.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * <p>
@@ -25,6 +26,7 @@ import lombok.Setter;
 @Setter
 @TableName("t_sys_config")
 @ApiModel(value = "SysConfig对象", description = "参数配置表")
+@EqualsAndHashCode(callSuper = true)
 public class SysConfig extends BaseEntity<SysConfig> {
 
     @Serial

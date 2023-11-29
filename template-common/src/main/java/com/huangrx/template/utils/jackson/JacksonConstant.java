@@ -6,6 +6,8 @@ package com.huangrx.template.utils.jackson;
  */
 public class JacksonConstant {
 
+    private JacksonConstant() {}
+
     public static final String JSON_ERROR_1 = "jackson from error, type: %s";
     public static final String JSON_ERROR_2 = "jackson from error, file path: %s, type: %s";
     public static final String JSON_ERROR_3 = "jackson from error, url: %s, type: %s";

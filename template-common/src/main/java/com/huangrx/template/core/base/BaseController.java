@@ -1,7 +1,7 @@
 package com.huangrx.template.core.base;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -38,7 +38,7 @@ public class BaseController {
      * 页面跳转
      */
     public String redirect(String url) {
-        return StrUtil.format("redirect:{}", url);
+        return CharSequenceUtil.format("redirect:{}", url);
     }
 
 

@@ -10,6 +10,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +26,7 @@ import lombok.Setter;
 @Setter
 @TableName("t_sys_role")
 @ApiModel(value = "SysRole对象", description = "角色信息表")
+@EqualsAndHashCode(callSuper = true)
 public class SysRole extends BaseEntity<SysRole> {
 
     @Serial

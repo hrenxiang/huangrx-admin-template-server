@@ -13,8 +13,8 @@ import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
 import com.baomidou.mybatisplus.generator.fill.Column;
 import com.baomidou.mybatisplus.generator.keywords.MySqlKeyWordsHandler;
 import com.huangrx.template.core.base.BaseController;
-import com.huangrx.template.core.base.BaseEntity;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +27,7 @@ import java.util.List;
  * @since 2023-11-25 13:34
  */
 @Data
+@Slf4j
 public class CodeGenerator {
 
     /**
@@ -146,12 +147,11 @@ public class CodeGenerator {
 
     private void injectionConfig(FastAutoGenerator generator) {
         //  注入配置
-        generator.injectionConfig(builder -> {
+        generator.injectionConfig(builder ->
             // 输出文件之前消费者
             builder.beforeOutputFile((tableInfo, objectMap) ->
-                            System.out.println("tableInfo: " + tableInfo.getEntityName() + " objectMap: " + objectMap.size()))
-                    .build();
-        });
+                            log.info("tableInfo: " + tableInfo.getEntityName() + " objectMap: " + objectMap.size()))
+                    .build());
     }
 
 

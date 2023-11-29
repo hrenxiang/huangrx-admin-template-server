@@ -61,9 +61,9 @@ public class UserAuthenticationFilter extends AbstractAuthenticationProcessingFi
     private static AbstractAuthenticationToken getAuthenticationToken(LoginDTO requestBody) {
         String loginType = requestBody.getLoginType();
         AbstractAuthenticationToken authenticationToken;
-        if (LoginType.REFRESH_TOKEN.getCode().equalsIgnoreCase(loginType)) {
+        if (LoginType.REFRESH_TOKEN.value().equalsIgnoreCase(loginType)) {
             authenticationToken = new UserLoginNormalAuthenticationToken(requestBody.getUsername(), requestBody.getPassword());
-        } else if (LoginType.WECHAT.getCode().equalsIgnoreCase(loginType)) {
+        } else if (LoginType.WECHAT.value().equalsIgnoreCase(loginType)) {
             authenticationToken = new UserLoginWeXinAuthenticationToken(requestBody.getOpenId(), requestBody.getWxToken());
         } else {
             authenticationToken = new UserLoginNormalAuthenticationToken(requestBody.getUsername(), requestBody.getPassword());

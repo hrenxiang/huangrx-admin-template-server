@@ -1,7 +1,6 @@
 package com.huangrx.template.user.enums;
 
 import com.huangrx.template.enums.BasicEnum;
-import lombok.Getter;
 
 /**
  * 对应sys_role表的data_scope字段
@@ -9,7 +8,6 @@ import lombok.Getter;
  * @author huangrx
  * @since 2023/11/27 14:28
  */
-@Getter
 public enum DataScopeType implements BasicEnum<Integer> {
 
     /**
@@ -28,6 +26,7 @@ public enum DataScopeType implements BasicEnum<Integer> {
     ;
 
     private final int value;
+
     private final String description;
 
     DataScopeType(int value, String description) {
@@ -35,4 +34,13 @@ public enum DataScopeType implements BasicEnum<Integer> {
         this.description = description;
     }
 
+    @Override
+    public Integer value() {
+        return this.value;
+    }
+
+    @Override
+    public String description() {
+        return this.description;
+    }
 }

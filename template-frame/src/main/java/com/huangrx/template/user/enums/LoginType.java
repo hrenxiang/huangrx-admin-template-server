@@ -1,6 +1,6 @@
 package com.huangrx.template.user.enums;
 
-import lombok.Getter;
+import com.huangrx.template.enums.BasicEnum;
 
 
 /**
@@ -9,8 +9,7 @@ import lombok.Getter;
  * @author   huangrx
  * @since   2023-04-26 02:09
  */
-@Getter
-public enum LoginType {
+public enum LoginType implements BasicEnum<String> {
 
     /**
      * 登录类型
@@ -23,11 +22,21 @@ public enum LoginType {
 
     ;
 
-    private final String code;
-    private final String desc;
+    private final String value;
+    private final String description;
 
-    LoginType(String code, String desc) {
-        this.code = code;
-        this.desc = desc;
+    LoginType(String value, String description) {
+        this.value = value;
+        this.description = description;
+    }
+
+    @Override
+    public String value() {
+        return this.value;
+    }
+
+    @Override
+    public String description() {
+        return this.description;
     }
 }

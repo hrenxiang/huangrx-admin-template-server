@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +27,7 @@ import lombok.Setter;
 @Setter
 @TableName("t_sys_operation_log")
 @ApiModel(value = "SysOperationLog对象", description = "操作日志记录")
+@EqualsAndHashCode(callSuper = true)
 public class SysOperationLog extends BaseEntity<SysOperationLog> {
 
     @Serial

@@ -51,20 +51,4 @@
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="APPLICATION" />
     </root>
-
-    <!-- logback为java中的包 -->
-    <!--<logger name="com.dudu.controller"/>-->
-    <!--logback.LogbackDemo：类的全路径 -->
-    <!--<logger name="com.dudu.controller.LearnController" level="WARN" additivity="true">-->
-    <!--<appender-ref ref="console"/>-->
-    <!--</logger>-->
-
-    <!--&lt;!&ndash; 测试环境+开发环境. 多个使用逗号隔开. &ndash;&gt;-->
-    <!--<springProfile name="test,dev">-->
-    <!--<logger name="com.dudu.controller" level="info" />-->
-    <!--</springProfile>-->
-    <!--&lt;!&ndash; 生产环境. &ndash;&gt;-->
-    <!--<springProfile name="prod">-->
-    <!--<logger name="com.dudu.controller" level="ERROR" />-->
-    <!--</springProfile>-->
 </configuration>

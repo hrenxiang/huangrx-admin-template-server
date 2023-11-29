@@ -1,5 +1,6 @@
 package com.huangrx.template;
 
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +16,7 @@ import java.net.UnknownHostException;
  * @author huangrx
  * @since 2023/11/22 23:27
  */
+@Slf4j
 @SpringBootApplication
 @MapperScan("com.huangrx.template.mapper")
 public class TemplateAdminApplication {
@@ -26,7 +28,7 @@ public class TemplateAdminApplication {
         String port = environment.getProperty("server.port");
         String baseUrl = environment.getProperty("server.servlet.context-path");
 
-        System.out.println("\n" +
+        log.info("\n" +
                 "                     ,--,                                                       \n" +
                 "  .--.--.          ,'_ /|                                 .--.--.    .--.--.    \n" +
                 " /  /    '    .--. |  | :    ,---.     ,---.     ,---.   /  /    '  /  /    '   \n" +

@@ -1,5 +1,6 @@
 package com.huangrx.template.user.enums;
 
+import com.huangrx.template.enums.BasicEnum;
 import lombok.Getter;
 
 /**
@@ -7,7 +8,7 @@ import lombok.Getter;
  * @since 2023/4/25 21:35
  */
 @Getter
-public enum TokenType {
+public enum TokenType implements BasicEnum<Integer> {
 
     /**
      * Token类型 用户名密码登录，手机号验证码登录等
@@ -16,12 +17,22 @@ public enum TokenType {
 
     WECHAT(1, "微信登录");
 
-    private final Integer code;
-    private final String desc;
+    private final Integer value;
 
-    TokenType(Integer code, String desc) {
-        this.code = code;
-        this.desc = desc;
+    private final String description;
+
+    TokenType(Integer value, String description) {
+        this.value = value;
+        this.description = description;
     }
 
+    @Override
+    public Integer value() {
+        return this.value;
+    }
+
+    @Override
+    public String description() {
+        return this.description;
+    }
 }

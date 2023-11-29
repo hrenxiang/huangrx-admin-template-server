@@ -2,6 +2,9 @@ package com.huangrx.template.user.base;
 
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 
 /**
  * 登录信息
@@ -10,7 +13,10 @@ import lombok.Data;
  * @since   2023-11-26 22:13
  */
 @Data
-public class LoginInfo {
+public class LoginInfo implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 3723259370577972761L;
 
     /**
      * 登录IP地址

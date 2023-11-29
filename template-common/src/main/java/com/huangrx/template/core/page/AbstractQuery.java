@@ -1,7 +1,7 @@
 package com.huangrx.template.core.page;
 
 import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -54,22 +54,26 @@ public abstract class AbstractQuery<T> {
     public abstract QueryWrapper<T> addQueryCondition();
 
     public void addSortCondition(QueryWrapper<T> queryWrapper) {
-        if (queryWrapper == null || StrUtil.isEmpty(orderColumn)) {
+        if (queryWrapper == null || CharSequenceUtil.isEmpty(orderColumn)) {
+            return;
+        }
+
+        if (CharSequenceUtil.isEmpty(this.orderDirection)) {
             return;
         }
 
         Boolean sortDirection = convertSortDirection();
         if (sortDirection != null) {
-            queryWrapper.orderBy(StrUtil.isNotEmpty(orderColumn), sortDirection, StrUtil.toUnderlineCase(orderColumn));
+            queryWrapper.orderBy(CharSequenceUtil.isNotEmpty(orderColumn), sortDirection, CharSequenceUtil.toUnderlineCase(orderColumn));
         }
     }
 
     public void addTimeCondition(QueryWrapper<T> queryWrapper) {
         if (queryWrapper != null
-                && StrUtil.isNotEmpty(this.timeRangeColumn)) {
+                && CharSequenceUtil.isNotEmpty(this.timeRangeColumn)) {
             queryWrapper
-                    .ge(beginTime != null, StrUtil.toUnderlineCase(timeRangeColumn), beginTime)
-                    .le(endTime != null, StrUtil.toUnderlineCase(timeRangeColumn), endTime);
+                    .ge(beginTime != null, CharSequenceUtil.toUnderlineCase(timeRangeColumn), beginTime)
+                    .le(endTime != null, CharSequenceUtil.toUnderlineCase(timeRangeColumn), endTime);
         }
     }
 
@@ -79,19 +83,8 @@ public abstract class AbstractQuery<T> {
      * @return 排序顺序， null为无排序
      */
     public Boolean convertSortDirection() {
-        Boolean isAsc = null;
-        if (StrUtil.isEmpty(this.orderDirection)) {
-            return null;
-        }
 
-        if (ASC.equals(this.orderDirection)) {
-            isAsc = true;
-        }
-        if (DESC.equals(this.orderDirection)) {
-            isAsc = false;
-        }
-
-        return isAsc;
+        return ASC.equals(this.orderDirection);
     }
 
 }

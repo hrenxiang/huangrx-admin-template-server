@@ -1,6 +1,7 @@
 package com.huangrx.template.exception.error;
 
 
+import com.huangrx.template.constant.Constants;
 import org.springframework.util.Assert;
 
 /**
@@ -23,8 +24,9 @@ public enum ErrorCode implements IErrorCode {
      * 目前10000~19999是初始系统内嵌功能使用的错误码，后续开发者可以直接使用20000以上的错误码作为业务错误码
      */
 
-    SUCCESS(0, "操作成功", "SUCCESS"),
-    FAILED(99999, "操作失败", "FAILED");
+    SUCCESS(0,"操作成功","SUCCESS"),
+
+    FAILED(99999,"操作失败","FAILED");
 
     private final int code;
     private final String msg;
@@ -210,7 +212,7 @@ public enum ErrorCode implements IErrorCode {
 
             String errorTypeName = this.getClass().getSimpleName();
             Assert.isTrue(i18nKey != null && i18nKey.startsWith(errorTypeName),
-                    String.format("错误码i18nKey值定义失败，%s错误码i18nKey值必须以%s开头，当前错误码为%s", errorTypeName, errorTypeName, name()));
+                    String.format(Constants.I18N_KEY_ERROR_MESSAGE, errorTypeName, errorTypeName, name()));
             this.code = code;
             this.msg = msg;
             this.i18nKey = i18nKey;
@@ -255,7 +257,7 @@ public enum ErrorCode implements IErrorCode {
 
             String errorTypeName = this.getClass().getSimpleName();
             Assert.isTrue(i18nKey != null && i18nKey.startsWith(errorTypeName),
-                    String.format("错误码i18nKey值定义失败，%s错误码i18nKey值必须以%s开头，当前错误码为%s", errorTypeName, errorTypeName, name()));
+                    String.format(Constants.I18N_KEY_ERROR_MESSAGE, errorTypeName, errorTypeName, name()));
             this.code = code;
             this.msg = msg;
             this.i18nKey = i18nKey;
@@ -318,7 +320,7 @@ public enum ErrorCode implements IErrorCode {
 
             String errorTypeName = this.getClass().getSimpleName();
             Assert.isTrue(i18nKey != null && i18nKey.startsWith(errorTypeName),
-                    String.format("错误码i18nKey值定义失败，%s错误码i18nKey值必须以%s开头，当前错误码为%s", errorTypeName, errorTypeName, name()));
+                    String.format(Constants.I18N_KEY_ERROR_MESSAGE, errorTypeName, errorTypeName, name()));
             this.code = code;
             this.msg = msg;
             this.i18nKey = i18nKey;
@@ -379,7 +381,7 @@ public enum ErrorCode implements IErrorCode {
 
             String errorTypeName = this.getClass().getSimpleName();
             Assert.isTrue(i18nKey != null && i18nKey.startsWith(errorTypeName),
-                    String.format("错误码i18nKey值定义失败，%s错误码i18nKey值必须以%s开头，当前错误码为%s", errorTypeName, errorTypeName, name()));
+                    String.format(Constants.I18N_KEY_ERROR_MESSAGE, errorTypeName, errorTypeName, name()));
             this.code = code;
             this.msg = msg;
             this.i18nKey = i18nKey;

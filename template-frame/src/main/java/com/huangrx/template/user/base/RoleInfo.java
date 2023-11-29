@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.SetUtils;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -17,7 +19,10 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleInfo {
+public class RoleInfo implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -3284268466543286168L;
 
     public static final RoleInfo EMPTY_ROLE = new RoleInfo();
 
@@ -28,7 +33,6 @@ public class RoleInfo {
     public static final String ALL_PERMISSIONS = "*:*:*";
 
     protected static final Set<String> ADMIN_PERMISSIONS = SetUtils.hashSet(ALL_PERMISSIONS);
-
 
     public RoleInfo(Long roleId, String roleKey, DataScopeType dataScope, Set<Long> deptIdSet,
                     Set<String> menuPermissions, Set<Long> menuIds) {
