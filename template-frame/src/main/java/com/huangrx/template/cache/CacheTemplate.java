@@ -1,8 +1,10 @@
 package com.huangrx.template.cache;
 
+import com.huangrx.template.security.config.InjectionSourceConfig;
 import jakarta.annotation.Resource;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
@@ -14,13 +16,13 @@ import java.util.Optional;
 @Slf4j
 public class CacheTemplate<T> {
 
-    @Resource
-    private RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
 
     private final CacheKeyEnum redisRedisEnum;
 
     public CacheTemplate(CacheKeyEnum redisRedisEnum) {
         this.redisRedisEnum = redisRedisEnum;
+        this.redisUtil = InjectionSourceConfig.instance().getRedisUtil();
     }
 
     /**

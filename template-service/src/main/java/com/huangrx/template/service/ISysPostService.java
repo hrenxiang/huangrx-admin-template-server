@@ -1,7 +1,7 @@
 package com.huangrx.template.service;
 
+import com.huangrx.template.core.base.IBaseService;
 import com.huangrx.template.po.SysPost;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author huangrx
  * @since 2023-11-26
  */
-public interface ISysPostService extends IService<SysPost> {
+public interface ISysPostService extends IBaseService<SysPost> {
 
 }

@@ -7,8 +7,19 @@ package com.huangrx.template.enums;
  * @since 2023/11/27 14:26
  */
 public interface BasicEnum<T> {
+
+    /**
+     * 值
+     *
+     * @return 值
+     */
     T value();
 
+    /**
+     * 描述
+     *
+     * @return 描述
+     */
     String description();
 
     /**

@@ -92,6 +92,10 @@ public enum ErrorCode implements IErrorCode {
 
         LOGIN_TOKEN_PARSE_ERROR(10207, "身份验证失败", "Business.LOGIN_TOKEN_PARSE_ERROR"),
 
+        // ---------------------------------- USER -----------------------------------------------
+
+        REGISTER_USER_EXIST(10301, "用户手机号已存在", "Business.REGISTER_USER_EXIST"),
+
         // ----------------------------- UPLOAD -----------------------------------------
 
         UPLOAD_FILE_TYPE_NOT_ALLOWED(10401, "不允许上传的文件类型，仅允许：{}", "Business.UPLOAD_FILE_TYPE_NOT_ALLOWED"),
@@ -106,6 +110,40 @@ public enum ErrorCode implements IErrorCode {
 
         UPLOAD_FILE_FAILED(10406, "上传文件失败：{}", "Business.UPLOAD_FILE_FAILED"),
 
+        // ---------------------------------- USER -----------------------------------------------
+
+        USER_NON_EXIST(10501, "登录用户：{} 不存在", "Business.USER_NON_EXIST"),
+
+        USER_IS_DISABLE(10502, "对不起， 您的账号：{} 已停用", "Business.USER_IS_DISABLE"),
+
+        USER_CACHE_IS_EXPIRE(11003, "用户缓存信息已经过期", "Business.USER_CACHE_IS_EXPIRE"),
+
+        USER_FAIL_TO_GET_USER_ID(11004, "获取用户ID失败", "Business.USER_FAIL_TO_GET_USER_ID"),
+
+        USER_FAIL_TO_GET_DEPT_ID(10504, "获取用户部门ID失败", "Business.USER_FAIL_TO_GET_DEPT_ID"),
+
+        USER_FAIL_TO_GET_ACCOUNT(10505, "获取用户账户失败", "Business.USER_FAIL_TO_GET_ACCOUNT"),
+
+        USER_FAIL_TO_GET_USER_INFO(10506, "获取用户信息失败", "Business.USER_FAIL_TO_GET_USER_INFO"),
+
+        USER_IMPORT_DATA_IS_NULL(10507, "导入的用户为空", "Business.USER_IMPORT_DATA_IS_NULL"),
+
+        USER_PHONE_NUMBER_IS_NOT_UNIQUE(10508, "该电话号码已被其他用户占用", "Business.USER_PHONE_NUMBER_IS_NOT_UNIQUE"),
+
+        USER_EMAIL_IS_NOT_UNIQUE(10509, "该邮件地址已被其他用户占用", "Business.USER_EMAIL_IS_NOT_UNIQUE"),
+
+        USER_PASSWORD_IS_NOT_CORRECT(10510, "用户密码错误", "Business.USER_PASSWORD_IS_NOT_CORRECT"),
+
+        USER_NEW_PASSWORD_IS_THE_SAME_AS_OLD(10511, "用户新密码与旧密码相同", "Business.USER_NEW_PASSWORD_IS_THE_SAME_AS_OLD"),
+
+        USER_UPLOAD_FILE_FAILED(10512, "用户上传文件失败", "Business.USER_UPLOAD_FILE_FAILED"),
+
+        USER_NAME_IS_NOT_UNIQUE(10513, "用户名已被其他用户占用", "Business.USER_NAME_IS_NOT_UNIQUE"),
+
+        USER_CURRENT_USER_CAN_NOT_BE_DELETE(10514, "当前用户不允许被删除", "Business.USER_CURRENT_USER_CAN_NOT_BE_DELETE"),
+
+        USER_ADMIN_CAN_NOT_BE_MODIFY(10515, "管理员不允许做任何修改", "Business.USER_ADMIN_CAN_NOT_BE_MODIFY"),
+
         // ----------------------------- CONFIG -----------------------------------------
 
         CONFIG_VALUE_IS_NOT_ALLOW_TO_EMPTY(10601, "参数键值不允许为空", "Business.CONFIG_VALUE_IS_NOT_ALLOW_TO_EMPTY"),
@@ -119,6 +157,8 @@ public enum ErrorCode implements IErrorCode {
         POST_CODE_IS_NOT_UNIQUE(10702, "岗位编号:{}, 已存在", "Business.POST_CODE_IS_NOT_UNIQUE"),
 
         POST_ALREADY_ASSIGNED_TO_USER_CAN_NOT_BE_DELETED(10703, "职位已分配给用户，请先取消分配再删除", "Business.POST_ALREADY_ASSIGNED_TO_USER_CAN_NOT_BE_DELETED"),
+
+        POST_NON_EXIST(10704, "岗位名不存在", "Business.POST_NON_EXIST"),
 
         // ------------------------------- DEPT ---------------------------------------------
 
@@ -164,39 +204,7 @@ public enum ErrorCode implements IErrorCode {
 
         ROLE_IS_NOT_AVAILABLE(11005, "角色：{} 已禁用，无法分配给用户", "Business.ROLE_IS_NOT_AVAILABLE"),
 
-        // ---------------------------------- USER -----------------------------------------------
-
-        USER_NON_EXIST(10501, "登录用户：{} 不存在", "Business.USER_NON_EXIST"),
-
-        USER_IS_DISABLE(10502, "对不起， 您的账号：{} 已停用", "Business.USER_IS_DISABLE"),
-
-        USER_CACHE_IS_EXPIRE(11003, "用户缓存信息已经过期", "Business.USER_CACHE_IS_EXPIRE"),
-
-        USER_FAIL_TO_GET_USER_ID(11004, "获取用户ID失败", "Business.USER_FAIL_TO_GET_USER_ID"),
-
-        USER_FAIL_TO_GET_DEPT_ID(10504, "获取用户部门ID失败", "Business.USER_FAIL_TO_GET_DEPT_ID"),
-
-        USER_FAIL_TO_GET_ACCOUNT(10505, "获取用户账户失败", "Business.USER_FAIL_TO_GET_ACCOUNT"),
-
-        USER_FAIL_TO_GET_USER_INFO(10506, "获取用户信息失败", "Business.USER_FAIL_TO_GET_USER_INFO"),
-
-        USER_IMPORT_DATA_IS_NULL(10507, "导入的用户为空", "Business.USER_IMPORT_DATA_IS_NULL"),
-
-        USER_PHONE_NUMBER_IS_NOT_UNIQUE(10508, "该电话号码已被其他用户占用", "Business.USER_PHONE_NUMBER_IS_NOT_UNIQUE"),
-
-        USER_EMAIL_IS_NOT_UNIQUE(10509, "该邮件地址已被其他用户占用", "Business.USER_EMAIL_IS_NOT_UNIQUE"),
-
-        USER_PASSWORD_IS_NOT_CORRECT(10510, "用户密码错误", "Business.USER_PASSWORD_IS_NOT_CORRECT"),
-
-        USER_NEW_PASSWORD_IS_THE_SAME_AS_OLD(10511, "用户新密码与旧密码相同", "Business.USER_NEW_PASSWORD_IS_THE_SAME_AS_OLD"),
-
-        USER_UPLOAD_FILE_FAILED(10512, "用户上传文件失败", "Business.USER_UPLOAD_FILE_FAILED"),
-
-        USER_NAME_IS_NOT_UNIQUE(10513, "用户名已被其他用户占用", "Business.USER_NAME_IS_NOT_UNIQUE"),
-
-        USER_CURRENT_USER_CAN_NOT_BE_DELETE(10514, "当前用户不允许被删除", "Business.USER_CURRENT_USER_CAN_NOT_BE_DELETE"),
-
-        USER_ADMIN_CAN_NOT_BE_MODIFY(10515, "管理员不允许做任何修改", "Business.USER_ADMIN_CAN_NOT_BE_MODIFY"),
+        ROLE_NOT_EXIST(11006, "角色不存在", "Business.ROLE_NOT_EXIST"),
 
         ;
 

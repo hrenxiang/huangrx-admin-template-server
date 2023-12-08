@@ -1,5 +1,6 @@
 package com.huangrx.template.security.config;
 
+import com.huangrx.template.cache.RedisUtil;
 import com.huangrx.template.security.service.ILoginService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,12 @@ public class InjectionSourceConfig {
      * 外部实现的认证 service
      */
     private ILoginService loginService;
+
+    /**
+     * 外部实现Redis工具类
+     */
+    private RedisUtil redisUtil;
+
     /**
      * 无参构造私有化，单例模式创建
      */
@@ -73,5 +80,13 @@ public class InjectionSourceConfig {
     public void setLoginService(ILoginService loginService) {
         this.loginService = loginService;
         log.info("InjectionSourceConfig ------ 配置用户实现层 ILoginService");
+    }
+
+    /**
+     * Redis 缓存工具类注入
+     */
+    public void setRedisUtil(RedisUtil redisUtil) {
+        this.redisUtil = redisUtil;
+        log.info("InjectionSourceConfig ------ Redis缓存工具类注入 RedisUtil");
     }
 }

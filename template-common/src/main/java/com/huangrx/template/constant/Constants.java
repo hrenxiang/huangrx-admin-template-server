@@ -85,4 +85,29 @@ public class Constants {
         public static final String CHAR_TYPE = "char";
 
     }
+
+    /**
+     * 验证码常量
+     */
+    public static class Regex {
+
+        private Regex() {
+        }
+
+        /**
+         * 正则表达式：验证密码(首字母大写 8位)
+         */
+        public static final String PASSWORD_EIGHT = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$";
+
+        /**
+         * 正则表达式：验证手机号
+         */
+        public static final String MOBILE = "^0?(13[0-9]|14[0-9]|15[0-9]|16[0-9]|17[0-9]|18[0-9]|19[0-9])[0-9]{8}$";
+
+        /**
+         * 正则表达式：验证邮箱
+         */
+        public static final String EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+
+    }
 }

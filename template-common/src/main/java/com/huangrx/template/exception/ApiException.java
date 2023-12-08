@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serial;
 import java.util.HashMap;
 
 
@@ -20,6 +21,9 @@ import java.util.HashMap;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ApiException extends RuntimeException {
+
+    @Serial
+    private static final long serialVersionUID = 4292305929475557988L;
 
     private IErrorCode errorCode;
 

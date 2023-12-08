@@ -1,7 +1,8 @@
 package com.huangrx.template.service;
 
+import com.huangrx.template.core.base.IBaseService;
+import com.huangrx.template.dto.AddUserDTO;
 import com.huangrx.template.po.SysUser;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -11,6 +12,21 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author huangrx
  * @since 2023-11-26
  */
-public interface ISysUserService extends IService<SysUser> {
+public interface ISysUserService extends IBaseService<SysUser> {
 
+    /**
+     * 注册新用户。
+     *
+     * @param request 包含用户详细信息的 AddUserDTO 请求。
+     */
+    void register(AddUserDTO request);
+
+
+    /**
+     * 根据手机号加载用户信息。
+     *
+     * @param phoneNumber 手机号
+     * @return 用户信息
+     */
+    SysUser loadUserByPhoneNumber(String phoneNumber);
 }

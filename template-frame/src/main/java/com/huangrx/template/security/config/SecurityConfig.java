@@ -1,5 +1,6 @@
 package com.huangrx.template.security.config;
 
+import com.huangrx.template.cache.RedisUtil;
 import com.huangrx.template.security.service.ILoginService;
 import com.huangrx.template.security.filter.JwtAuthenticationTokenFilter;
 import com.huangrx.template.security.filter.UserAuthenticationFilter;
@@ -44,6 +45,9 @@ public class SecurityConfig {
 
     @Resource
     private ILoginService loginService;
+
+    @Resource
+    private RedisUtil redisUtil;
 
     /**
      * 强散列哈希加密实现
@@ -116,6 +120,7 @@ public class SecurityConfig {
 
         InjectionSourceConfig.instance().setLoginService(loginService);
         InjectionSourceConfig.instance().setPasswordEncoder(passwordEncoder());
+        InjectionSourceConfig.instance().setRedisUtil(redisUtil);
 
         // 需要放行的接口
         List<String> permitUrls = ignoreUrlsConfig().getUrls();
