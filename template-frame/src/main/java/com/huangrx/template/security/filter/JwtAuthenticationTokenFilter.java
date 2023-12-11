@@ -3,8 +3,8 @@ package com.huangrx.template.security.filter;
 
 import com.huangrx.template.cache.CacheKeyEnum;
 import com.huangrx.template.cache.CacheTemplate;
-import com.huangrx.template.user.base.SystemLoginUser;
 import com.huangrx.template.security.utils.TokenUtils;
+import com.huangrx.template.user.base.SystemLoginUser;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;

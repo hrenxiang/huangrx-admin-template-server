@@ -1,6 +1,8 @@
 package com.huangrx.template.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.huangrx.template.constant.Constants;
 import com.huangrx.template.convert.UserConvert;
 import com.huangrx.template.dto.AddUserDTO;
 import com.huangrx.template.exception.ApiException;
@@ -58,7 +60,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public SysUser loadUserByPhoneNumber(String phoneNumber) {
-        return null;
+        return this.getOne(
+                Wrappers.<SysUser>lambdaQuery()
+                        .eq(SysUser::getPhoneNumber, phoneNumber)
+                        .eq(SysUser::getDeleted, Constants.DeletedFlag.NOT_DELETE)
+        );
     }
 
     @Override

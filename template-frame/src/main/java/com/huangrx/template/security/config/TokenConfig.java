@@ -46,6 +46,9 @@ public class TokenConfig {
     @Getter
     private static String tokenTypeKey;
 
+    @Getter
+    private static Long autoRefreshTime;
+
     @Value("${authorization.token-header}")
     private void setTokenHeader(String tokenHeader) {
         TokenConfig.tokenHeader = tokenHeader;
@@ -89,5 +92,10 @@ public class TokenConfig {
     @Value("${authorization.token-type-key}")
     private void setTokenTypeKey(String tokenTypeKey) {
         TokenConfig.tokenTypeKey = tokenTypeKey;
+    }
+
+    @Value("${authorization.auto-refresh-time}")
+    private void setAutoRefreshTime(Long autoRefreshTime) {
+        TokenConfig.autoRefreshTime = autoRefreshTime;
     }
 }

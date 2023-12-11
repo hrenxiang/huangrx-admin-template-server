@@ -13,11 +13,14 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 
 /**
@@ -51,7 +54,7 @@ public class UserLoginNormalAuthenticationProvider implements AuthenticationProv
         log.info("UserLoginNormalAuthenticationProvider ------ 处理用户名密码登录请求");
         UserLoginNormalAuthenticationToken authenticationToken = (UserLoginNormalAuthenticationToken) authentication;
         String username = (String) authenticationToken.getPrincipal();
-        SystemLoginUser loginUser = loginService.loadUserByUsername(username);
+        SystemLoginUser loginUser = loginService.loadUserByPhoneNumber(username);
         if (Objects.isNull(loginUser)) {
             throw new ApiException(ErrorCode.Business.USER_NON_EXIST, username);
         }
@@ -67,9 +70,14 @@ public class UserLoginNormalAuthenticationProvider implements AuthenticationProv
             throw new ApiException(ErrorCode.Business.LOGIN_ERROR, e.getMessage());
         }
 
-        // 设置权限和缓存的KEY
-        List<GrantedAuthority> authorities = loginService.getAuthorities(loginUser.getUserId());
+        // 设置权限
+        Set<String> menuPermissions = loginUser.getRoleInfo().getMenuPermissions();
+        List<GrantedAuthority> authorities = new ArrayList<>(menuPermissions.size());
+        for (String authority : menuPermissions) {
+            authorities.add(new SimpleGrantedAuthority(authority));
+        }
         loginUser.setAuthorities(authorities);
+        // 设置缓存的KEY
         loginUser.setCacheKey(IdUtil.fastUUID());
         UserLoginNormalAuthenticationToken authenticationResult = new UserLoginNormalAuthenticationToken(loginUser, loginUser.getAuthorities());
         authenticationResult.setDetails(authenticationToken.getDetails());

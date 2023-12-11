@@ -24,9 +24,9 @@ public enum ErrorCode implements IErrorCode {
      * 目前10000~19999是初始系统内嵌功能使用的错误码，后续开发者可以直接使用20000以上的错误码作为业务错误码
      */
 
-    SUCCESS(0,"操作成功","SUCCESS"),
+    SUCCESS(0, "操作成功", "SUCCESS"),
 
-    FAILED(99999,"操作失败","FAILED");
+    FAILED(99999, "操作失败", "FAILED");
 
     private final int code;
     private final String msg;
@@ -376,7 +376,7 @@ public enum ErrorCode implements IErrorCode {
 
         EXCEL_PROCESS_ERROR(8, "excel处理失败：{}", "Internal.EXCEL_PROCESS_ERROR"),
 
-        ;
+        REQUEST_OBJECT_NULL(100, "无法获取请求信息或请求对象为空", "ErrorCode.REQUEST_OBJECT_NULL");
 
         private final int code;
         private final String msg;

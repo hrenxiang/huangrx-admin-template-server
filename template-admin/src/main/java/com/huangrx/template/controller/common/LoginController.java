@@ -1,4 +1,4 @@
-package com.huangrx.template.common;
+package com.huangrx.template.controller.common;
 
 import com.huangrx.template.core.dto.ResponseDTO;
 import com.huangrx.template.dto.AddUserDTO;

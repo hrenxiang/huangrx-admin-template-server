@@ -8,7 +8,7 @@ import com.huangrx.template.enums.BasicEnum;
  * @author huangrx
  * @since 2023/11/27 14:28
  */
-public enum DataScopeType implements BasicEnum<Integer> {
+public enum DataScopeEnum implements BasicEnum<Integer> {
 
     /**
      * 数据权限范围
@@ -29,7 +29,7 @@ public enum DataScopeType implements BasicEnum<Integer> {
 
     private final String description;
 
-    DataScopeType(int value, String description) {
+    DataScopeEnum(int value, String description) {
         this.value = value;
         this.description = description;
     }

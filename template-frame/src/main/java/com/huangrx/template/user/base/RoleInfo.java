@@ -1,6 +1,6 @@
 package com.huangrx.template.user.base;
 
-import com.huangrx.template.user.enums.DataScopeType;
+import com.huangrx.template.user.enums.DataScopeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,9 +32,9 @@ public class RoleInfo implements Serializable {
 
     public static final String ALL_PERMISSIONS = "*:*:*";
 
-    protected static final Set<String> ADMIN_PERMISSIONS = SetUtils.hashSet(ALL_PERMISSIONS);
+    public static final Set<String> ADMIN_PERMISSIONS = SetUtils.hashSet(ALL_PERMISSIONS);
 
-    public RoleInfo(Long roleId, String roleKey, DataScopeType dataScope, Set<Long> deptIdSet,
+    public RoleInfo(Long roleId, String roleKey, DataScopeEnum dataScope, Set<Long> deptIdSet,
                     Set<String> menuPermissions, Set<Long> menuIds) {
         this.roleId = roleId;
         this.roleKey = roleKey;
@@ -47,7 +47,7 @@ public class RoleInfo implements Serializable {
 
     private Long roleId;
     private String roleName;
-    private DataScopeType dataScope;
+    private DataScopeEnum dataScope;
     private Set<Long> deptIdSet;
     private String roleKey;
     private Set<String> menuPermissions;

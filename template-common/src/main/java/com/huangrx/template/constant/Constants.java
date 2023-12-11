@@ -58,12 +58,12 @@ public class Constants {
      */
     public static class ProtocolPrefix {
 
-            private ProtocolPrefix() {
-            }
+        private ProtocolPrefix() {
+        }
 
-            public static final String HTTP = "http://";
+        public static final String HTTP = "http://";
 
-            public static final String HTTPS = "https://";
+        public static final String HTTPS = "https://";
     }
 
     /**
@@ -109,5 +109,25 @@ public class Constants {
          */
         public static final String EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 
+    }
+
+    /**
+     * 删除标识常量
+     */
+    public static class DeletedFlag {
+
+        private DeletedFlag() {
+
+        }
+
+        /**
+         * 已删除
+         */
+        public static final String DELETED = "0";
+
+        /**
+         * 未删除
+         */
+        public static final String NOT_DELETE = "1";
     }
 }
