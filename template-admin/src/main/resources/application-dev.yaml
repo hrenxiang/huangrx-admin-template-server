@@ -83,8 +83,8 @@ authorization:
   token-subject-access: access-token
   token-subject-refresh: refresh-token
   secret-key: huangrxnikezhenshitaishuail1014
-  access-expire-time: 24
-  refresh-expire-time: 720
+  access-expire-time: 30
+  refresh-expire-time: 2
   login-user-key: login-user
   token-type-key: token-type
   auto-refresh-time: 30

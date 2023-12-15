@@ -20,6 +20,7 @@ import java.io.IOException;
 /**
  * 退出成功处理类 返回成功
  * 在SecurityConfig类当中 定义了/logout 路径对应处理逻辑
+ * 如果项目有对接单点登录，这里可以调用单点提供的登出接口进行全局退出
  *
  * @author huangrx
  * @since 2023/11/27 23:53

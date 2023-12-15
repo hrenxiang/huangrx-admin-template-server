@@ -45,6 +45,7 @@ public class UserLoginAuthenticationSuccessHandler implements AuthenticationSucc
         return TokenDTO.builder()
                 .accessToken(generateAccessToken(authentication))
                 .refreshToken(generateRefreshToken(authentication))
+                .expire(TokenUtils.generateTokenExpireDate())
                 .build();
     }
 

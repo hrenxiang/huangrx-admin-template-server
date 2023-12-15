@@ -14,6 +14,7 @@ import com.huangrx.template.user.enums.TokenType;
 import com.huangrx.template.user.base.SystemLoginUser;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -73,7 +74,7 @@ public class TokenUtils {
     /**
      * 使用Auth0-Java-JWT生成对应的 Token
      *
-     * @param tokenType      Token类型 用户名密码登录，手机号验证码登录等
+     * @param tokenType Token类型 用户名密码登录，手机号验证码登录等
      * @return Token
      */
     private static String generateToken(TokenType tokenType) {
@@ -89,14 +90,14 @@ public class TokenUtils {
                 //发行时间
                 .withIssuedAt(DateUtil.date().toJdkDate())
                 //有效时间
-                .withExpiresAt(generateExpiresDate(Calendar.MINUTE, TokenConfig.getAccessExpireTime()))
+                .withExpiresAt(generateTokenExpireDate())
                 .sign(Algorithm.HMAC256(TokenConfig.getSecretKey()));
     }
 
     /**
      * 使用Auth0-Java-JWT生成对应的 RefreshToken
      *
-     * @param tokenType      Token类型 用户名密码登录，手机号验证码登录等
+     * @param tokenType Token类型 用户名密码登录，手机号验证码登录等
      * @return RefreshToken
      */
     private static String generateRefreshToken(TokenType tokenType) {
@@ -112,9 +113,30 @@ public class TokenUtils {
                 //发行时间
                 .withIssuedAt(DateUtil.date().toJdkDate())
                 //有效时间
-                .withExpiresAt(generateExpiresDate(Calendar.HOUR, TokenConfig.getRefreshExpireTime()))
+                .withExpiresAt(generateRefreshTokenExpireDate())
                 .sign(Algorithm.HMAC256(TokenConfig.getSecretKey()));
     }
+
+    /**
+     * 生成访问刷新TOKEN过期时间
+     *
+     * @return 刷新token过期时间
+     */
+    @NotNull
+    public static Date generateRefreshTokenExpireDate() {
+        return generateExpiresDate(Calendar.HOUR, TokenConfig.getRefreshExpireTime());
+    }
+
+    /**
+     * 生成访问TOKEN过期时间
+     *
+     * @return token过期时间
+     */
+    @NotNull
+    public static Date generateTokenExpireDate() {
+        return generateExpiresDate(Calendar.MINUTE, TokenConfig.getAccessExpireTime());
+    }
+
 
     /**
      * 生成过期时间（目前固定小时，可以进行修改）

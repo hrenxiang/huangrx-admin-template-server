@@ -3,10 +3,10 @@ package com.huangrx.template.security.provider;
 import cn.hutool.core.util.IdUtil;
 import com.huangrx.template.exception.ApiException;
 import com.huangrx.template.exception.error.ErrorCode;
-import com.huangrx.template.user.base.SystemLoginUser;
 import com.huangrx.template.security.config.InjectionSourceConfig;
 import com.huangrx.template.security.provider.token.UserLoginNormalAuthenticationToken;
 import com.huangrx.template.security.service.ILoginService;
+import com.huangrx.template.user.base.SystemLoginUser;
 import com.huangrx.template.utils.codec.CodecUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -59,15 +59,11 @@ public class UserLoginNormalAuthenticationProvider implements AuthenticationProv
             throw new ApiException(ErrorCode.Business.USER_NON_EXIST, username);
         }
 
-        try {
-            // 密码目前使用AES算法加密后传输，可逆，这里需要解密后再配置的passwordEncoder使用进行加密处理
-            String encodePassword = authenticationToken.getCredentials().toString();
-            String decodePassword = CodecUtil.aesDecode(encodePassword, "itMCaD7HcfAnia5c");
-            if (!passwordEncoder.matches(decodePassword, loginUser.getPassword())) {
-                throw new ApiException(ErrorCode.Business.LOGIN_WRONG_USER_PASSWORD);
-            }
-        } catch (Exception e) {
-            throw new ApiException(ErrorCode.Business.LOGIN_ERROR, e.getMessage());
+        // 密码目前使用AES算法加密后传输，可逆，这里需要解密后再配置的passwordEncoder使用进行加密处理
+        String encodePassword = authenticationToken.getCredentials().toString();
+        String decodePassword = CodecUtil.aesDecode(encodePassword, "itMCaD7HcfAnia5c");
+        if (!passwordEncoder.matches(decodePassword, loginUser.getPassword())) {
+            throw new ApiException(ErrorCode.Business.LOGIN_WRONG_USER_PASSWORD);
         }
 
         // 设置权限

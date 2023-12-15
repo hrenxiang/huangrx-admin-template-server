@@ -63,7 +63,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return this.getOne(
                 Wrappers.<SysUser>lambdaQuery()
                         .eq(SysUser::getPhoneNumber, phoneNumber)
-                        .eq(SysUser::getDeleted, Constants.DeletedFlag.NOT_DELETE)
         );
     }
 

@@ -123,11 +123,11 @@ public class Constants {
         /**
          * 已删除
          */
-        public static final String DELETED = "0";
+        public static final String DELETED = "1";
 
         /**
          * 未删除
          */
-        public static final String NOT_DELETE = "1";
+        public static final String NOT_DELETE = "0";
     }
 }

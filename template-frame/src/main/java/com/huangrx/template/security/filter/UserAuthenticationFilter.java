@@ -25,6 +25,9 @@ import java.io.IOException;
 
 /**
  * 身份验证处理过滤器
+ * 如果对接有单点登录，就无须调用这里的login接口
+ * 单点会在前端提供具体的调用逻辑，然后我们只需要实现单点登录成功后提供的生成token的接口即可
+ * 并且我们不仅要生成token，也要将对应的用户信息保存到SystemLoginUser当中，无需将用户信息保存到现有的用户表中
  *
  * @author huangrx
  * @since 2023-04-25 22:31
