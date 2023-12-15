@@ -19,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 
@@ -55,14 +54,11 @@ public class UserLoginNormalAuthenticationProvider implements AuthenticationProv
         UserLoginNormalAuthenticationToken authenticationToken = (UserLoginNormalAuthenticationToken) authentication;
         String username = (String) authenticationToken.getPrincipal();
         SystemLoginUser loginUser = loginService.loadUserByPhoneNumber(username);
-        if (Objects.isNull(loginUser)) {
-            throw new ApiException(ErrorCode.Business.USER_NON_EXIST, username);
-        }
 
         // 密码目前使用AES算法加密后传输，可逆，这里需要解密后再配置的passwordEncoder使用进行加密处理
         String encodePassword = authenticationToken.getCredentials().toString();
-//        String decodePassword = CodecUtil.aesDecode(encodePassword, "itMCaD7HcfAnia5c");
-        if (!passwordEncoder.matches(encodePassword, loginUser.getPassword())) {
+        String decodePassword = CodecUtil.aesDecode(encodePassword, "itMCaD7HcfAnia5c");
+        if (!passwordEncoder.matches(decodePassword, loginUser.getPassword())) {
             throw new ApiException(ErrorCode.Business.LOGIN_WRONG_USER_PASSWORD);
         }
 

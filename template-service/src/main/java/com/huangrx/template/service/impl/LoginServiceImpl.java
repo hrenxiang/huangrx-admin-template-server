@@ -23,7 +23,6 @@ import com.huangrx.template.user.vo.UserVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.SetUtils;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,14 +51,14 @@ public class LoginServiceImpl implements ILoginService {
 
 
     @Override
-    public SystemLoginUser loadUserByPhoneNumber(String phoneNumber) throws UsernameNotFoundException {
+    public SystemLoginUser loadUserByPhoneNumber(String phoneNumber) {
         SysUser userEntity = userService.loadUserByPhoneNumber(phoneNumber);
         if (Optional.ofNullable(userEntity).isEmpty()) {
-            log.info("登录用户：{} 不存在.", phoneNumber);
+            log.error("登录用户：{} 不存在.", phoneNumber);
             throw new ApiException(ErrorCode.Business.USER_NON_EXIST, phoneNumber);
         }
         if (!Objects.equals(UserStatusEnum.NORMAL.value(), userEntity.getStatus())) {
-            log.info("登录用户：{} 已被停用.", phoneNumber);
+            log.error("登录用户：{} 已被停用.", phoneNumber);
             throw new ApiException(ErrorCode.Business.USER_IS_DISABLE, phoneNumber);
         }
 
