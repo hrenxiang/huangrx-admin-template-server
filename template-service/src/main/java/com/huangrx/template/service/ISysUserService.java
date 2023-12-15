@@ -3,6 +3,7 @@ package com.huangrx.template.service;
 import com.huangrx.template.core.base.IBaseService;
 import com.huangrx.template.dto.AddUserDTO;
 import com.huangrx.template.po.SysUser;
+import com.huangrx.template.user.vo.UserVO;
 
 /**
  * <p>
@@ -29,4 +30,12 @@ public interface ISysUserService extends IBaseService<SysUser> {
      * @return 用户信息
      */
     SysUser loadUserByPhoneNumber(String phoneNumber);
+
+    /**
+     * 加载用户ID为userId的用户
+     *
+     * @param userId 用户ID
+     * @return 用户信息
+     */
+    UserVO loadUserById(Long userId);
 }

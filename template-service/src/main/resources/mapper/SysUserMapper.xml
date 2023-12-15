@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huangrx.template.mapper.SysUserMapper">
+
+    <select id="loadUserById" resultType="com.huangrx.template.user.vo.UserVO">
+        select su.user_id,
+        su.post_id,
+        su.role_id,
+        su.dept_id,
+        su.username,
+        su.nickname,
+        su.user_type,
+        su.email,
+        su.phone_number,
+        su.sex,
+        su.avatar,
+        su.password,
+        su.status,
+        su.login_ip,
+        su.login_date,
+        su.is_admin,
+        su.creator_id,
+        su.create_time,
+        su.updater_id,
+        su.update_time,
+        su.remark,
+        sp.post_name,
+        sd.dept_name,
+        sr.role_name
+        from t_sys_user su
+        left join t_sys_post sp on su.post_id = sp.post_id
+        left join t_sys_dept sd on su.dept_id = sd.dept_id
+        left join t_sys_role sr on su.role_id = sr.role_id
+        where su.deleted = 0
+        and sd.deleted = 0
+        and sr.deleted = 0
+        <if test="id != null">
+            and su.user_id = #{id}
+        </if>
+    </select>
+</mapper>

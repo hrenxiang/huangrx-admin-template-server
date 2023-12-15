@@ -13,6 +13,7 @@ import com.huangrx.template.security.config.InjectionSourceConfig;
 import com.huangrx.template.service.ISysPostService;
 import com.huangrx.template.service.ISysRoleService;
 import com.huangrx.template.service.ISysUserService;
+import com.huangrx.template.user.vo.UserVO;
 import jakarta.annotation.Resource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -64,6 +65,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 Wrappers.<SysUser>lambdaQuery()
                         .eq(SysUser::getPhoneNumber, phoneNumber)
         );
+    }
+
+    @Override
+    public UserVO loadUserById(Long userId) {
+        return baseMapper.loadUserById(userId);
     }
 
     @Override

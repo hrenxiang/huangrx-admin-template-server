@@ -93,4 +93,3 @@ security:
   ignored:
     urls:
       - /register
-      - /login

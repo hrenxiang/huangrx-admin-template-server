@@ -61,8 +61,8 @@ public class UserLoginNormalAuthenticationProvider implements AuthenticationProv
 
         // 密码目前使用AES算法加密后传输，可逆，这里需要解密后再配置的passwordEncoder使用进行加密处理
         String encodePassword = authenticationToken.getCredentials().toString();
-        String decodePassword = CodecUtil.aesDecode(encodePassword, "itMCaD7HcfAnia5c");
-        if (!passwordEncoder.matches(decodePassword, loginUser.getPassword())) {
+//        String decodePassword = CodecUtil.aesDecode(encodePassword, "itMCaD7HcfAnia5c");
+        if (!passwordEncoder.matches(encodePassword, loginUser.getPassword())) {
             throw new ApiException(ErrorCode.Business.LOGIN_WRONG_USER_PASSWORD);
         }
 

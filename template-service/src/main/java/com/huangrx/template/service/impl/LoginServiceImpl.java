@@ -19,14 +19,17 @@ import com.huangrx.template.service.ISysUserService;
 import com.huangrx.template.user.base.RoleInfo;
 import com.huangrx.template.user.base.SystemLoginUser;
 import com.huangrx.template.user.enums.DataScopeEnum;
+import com.huangrx.template.user.vo.UserVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.SetUtils;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -68,6 +71,11 @@ public class LoginServiceImpl implements ILoginService {
         loginUser.setAutoRefreshCacheTime(loginUser.getLoginInfo().getLoginTime()
                 + TimeUnit.MINUTES.toMillis(TokenConfig.getAutoRefreshTime()));
         return loginUser;
+    }
+
+    @Override
+    public UserVO loadUserById(Long userId) {
+        return userService.loadUserById(userId);
     }
 
     public RoleInfo getRoleInfo(Long roleId, boolean isAdmin) {

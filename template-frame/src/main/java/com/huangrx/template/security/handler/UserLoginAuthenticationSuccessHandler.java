@@ -2,10 +2,14 @@ package com.huangrx.template.security.handler;
 
 import com.huangrx.template.cache.CacheKeyEnum;
 import com.huangrx.template.cache.CacheTemplate;
+import com.huangrx.template.security.config.InjectionSourceConfig;
 import com.huangrx.template.security.provider.token.UserLoginWeXinAuthenticationToken;
+import com.huangrx.template.security.service.ILoginService;
 import com.huangrx.template.security.utils.TokenUtils;
 import com.huangrx.template.user.base.SystemLoginUser;
 import com.huangrx.template.user.dto.TokenDTO;
+import com.huangrx.template.user.vo.LoginUserVO;
+import com.huangrx.template.user.vo.LoginVO;
 import com.huangrx.template.utils.ServletHolderUtil;
 import com.huangrx.template.utils.jackson.JacksonUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,15 +29,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserLoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
+    private final ILoginService loginService;
+
+    public UserLoginAuthenticationSuccessHandler() {
+        this.loginService = InjectionSourceConfig.instance().getLoginService();
+    }
+
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        TokenDTO data = generateToken(authentication);
+        TokenDTO tokenDTO = generateToken(authentication);
         SystemLoginUser loginUser = (SystemLoginUser) authentication.getPrincipal();
         // 缓存用户信息
         CacheTemplate<Object> cacheTemplate = new CacheTemplate<>(CacheKeyEnum.LOGIN_USER_KEY);
         cacheTemplate.set(loginUser.getCacheKey(), loginUser);
-        ServletHolderUtil.renderString(response, JacksonUtil.toJson(data));
-        log.info("UserLoginAuthenticationSuccessHandler ------ 身份验证成功，生成Token: {}", data);
+        // 解析登录用户信息
+        LoginUserVO loginUserVO = new LoginUserVO();
+        loginUserVO.setUserInfo(loginService.loadUserById(loginUser.getUserId()));
+        loginUserVO.setRoleKey(loginUser.getRoleInfo().getRoleKey());
+        loginUserVO.setPermissions(loginUser.getRoleInfo().getMenuPermissions());
+        // 返回结果
+        LoginVO result = new LoginVO();
+        result.setToken(tokenDTO);
+        result.setUser(loginUserVO);
+        ServletHolderUtil.renderString(response, JacksonUtil.toJson(result));
+        log.info("UserLoginAuthenticationSuccessHandler ------ 身份验证成功，生成Token: {}", result);
     }
 
     /**
