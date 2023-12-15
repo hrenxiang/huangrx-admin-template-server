@@ -6,6 +6,9 @@ logging:
     org:
       springframework:
         security: DEBUG
+#     com:
+#       zaxxer:
+#         hikari: ERROR
   config: classpath:logback-spring-test.xml
 
 spring:
@@ -84,6 +87,7 @@ authorization:
   refresh-expire-time: 720
   login-user-key: login-user
   token-type-key: token-type
+  auto-refresh-time: 30
 
 security:
   ignored:

@@ -376,7 +376,7 @@ public enum ErrorCode implements IErrorCode {
 
         EXCEL_PROCESS_ERROR(8, "excel处理失败：{}", "Internal.EXCEL_PROCESS_ERROR"),
 
-        REQUEST_OBJECT_NULL(100, "无法获取请求信息或请求对象为空", "ErrorCode.REQUEST_OBJECT_NULL");
+        REQUEST_OBJECT_NULL(9, "无法获取请求信息或请求对象为空", "Internal.REQUEST_OBJECT_NULL");
 
         private final int code;
         private final String msg;
