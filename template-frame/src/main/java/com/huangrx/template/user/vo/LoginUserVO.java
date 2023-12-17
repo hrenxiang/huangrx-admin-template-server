@@ -2,7 +2,7 @@ package com.huangrx.template.user.vo;
 
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * <p> 登录用户VO </p>
@@ -15,6 +15,6 @@ public class LoginUserVO {
 
     private UserVO userInfo;
     private String roleKey;
-    private Set<String> permissions;
+    private List<String> permissions;
 
 }

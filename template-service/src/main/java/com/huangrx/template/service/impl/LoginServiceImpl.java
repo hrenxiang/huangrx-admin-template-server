@@ -23,12 +23,11 @@ import com.huangrx.template.user.vo.UserVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.SetUtils;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -69,6 +68,14 @@ public class LoginServiceImpl implements ILoginService {
         loginUser.fillLoginInfo();
         loginUser.setAutoRefreshCacheTime(loginUser.getLoginInfo().getLoginTime()
                 + TimeUnit.MINUTES.toMillis(TokenConfig.getAutoRefreshTime()));
+
+        // 设置权限
+        Set<String> menuPermissions = roleInfo.getMenuPermissions();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>(menuPermissions.size());
+        for (String authority : menuPermissions) {
+            authorities.add(new SimpleGrantedAuthority(authority));
+        }
+        loginUser.setAuthorities(authorities);
         return loginUser;
     }
 

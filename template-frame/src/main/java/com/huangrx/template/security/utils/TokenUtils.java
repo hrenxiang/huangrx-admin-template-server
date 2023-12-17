@@ -5,6 +5,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.huangrx.template.exception.ApiException;
@@ -15,6 +16,7 @@ import com.huangrx.template.user.base.SystemLoginUser;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -139,7 +141,7 @@ public class TokenUtils {
 
 
     /**
-     * 生成过期时间（目前固定小时，可以进行修改）
+     * 生成过期时间
      *
      * @param field 时间单位
      * @param time  过期时间
@@ -208,10 +210,24 @@ public class TokenUtils {
     public String getCacheKey(HttpServletRequest request) {
         // 获取请求携带的令牌
         String token = getToken(request);
+        return getCacheKeyFromToken(token, TokenType.NORMAL.getValue());
+    }
+
+    /**
+     * 获取用户身份信息缓存KEY
+     *
+     * @return 用户信息缓存KEY
+     */
+    @Nullable
+    public static String getCacheKeyFromToken(String token, Integer tokenType) {
         if (CharSequenceUtil.isNotEmpty(token)) {
             try {
                 // 验证Token有效性
-                verifyAccessToken(token);
+                if (TokenType.REFRESH_TOKEN.value().equals(tokenType)) {
+                    verifyRefreshToken(token);
+                } else {
+                    verifyAccessToken(token);
+                }
                 // 解析Token获取Claims
                 Map<String, Claim> claims = JWT.decode(token).getClaims();
                 // 解析对应的权限以及用户信息
@@ -228,7 +244,29 @@ public class TokenUtils {
         return null;
     }
 
-    public void refreshToken(SystemLoginUser loginUser) {
-        log.info("refresh token, {}", loginUser);
+    /**
+     * 获取签发对象：用户手机号
+     *
+     * @param token token
+     * @return 用户手机号
+     */
+    public static String getAudienceUsername(String token) {
+        return getAudience(token, 0);
+    }
+
+    /**
+     * 获得Audience内容
+     *
+     * @param token token
+     * @param key   数据对应下标
+     * @return Audience内容
+     */
+    private static String getAudience(String token, Integer key) {
+        try {
+            return JWT.decode(token).getAudience().get(key);
+        } catch (JWTDecodeException j) {
+            //这里是token解析失败
+            throw new ApiException(ErrorCode.Client.INVALID_TOKEN);
+        }
     }
 }

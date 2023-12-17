@@ -44,10 +44,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         CacheTemplate<Object> cacheTemplate = new CacheTemplate<>(CacheKeyEnum.LOGIN_USER_KEY);
-        SystemLoginUser loginUser = (SystemLoginUser) cacheTemplate.getObjectOnlyInCacheByKey(cacheKey);
+        SystemLoginUser loginUser = (SystemLoginUser) cacheTemplate.getObjectOnlyInCacheById(cacheKey);
 
         if (loginUser != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            tokenUtils.refreshToken(loginUser);
             // 如果没有将当前登录用户放入到上下文中的话，会认定用户未授权，返回用户未登陆的错误
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

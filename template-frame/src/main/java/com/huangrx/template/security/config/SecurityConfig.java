@@ -1,6 +1,7 @@
 package com.huangrx.template.security.config;
 
 import com.huangrx.template.cache.RedisUtil;
+import com.huangrx.template.security.provider.UserLoginRefreshTokenAuthenticationProvider;
 import com.huangrx.template.security.service.ILoginService;
 import com.huangrx.template.security.filter.JwtAuthenticationTokenFilter;
 import com.huangrx.template.security.filter.UserAuthenticationFilter;
@@ -67,6 +68,11 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider userLoginNormalAuthenticationProvider() {
         return new UserLoginNormalAuthenticationProvider();
+    }
+
+    @Bean
+    public AuthenticationProvider userLoginRefreshTokenAuthenticationProvider() {
+        return new UserLoginRefreshTokenAuthenticationProvider();
     }
 
     @Bean
@@ -162,7 +168,9 @@ public class SecurityConfig {
         log.info("UserAuthenticationFilter ------ 身份认证处理过滤器初始化开始");
         UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(successHandler(), failureHandler());
         List<AuthenticationProvider> providerList = List.of(
-                new UserLoginNormalAuthenticationProvider());
+                new UserLoginNormalAuthenticationProvider(),
+                new UserLoginRefreshTokenAuthenticationProvider()
+        );
 
         ProviderManager providerManager = new ProviderManager(providerList);
         userAuthenticationFilter.setAuthenticationManager(providerManager);

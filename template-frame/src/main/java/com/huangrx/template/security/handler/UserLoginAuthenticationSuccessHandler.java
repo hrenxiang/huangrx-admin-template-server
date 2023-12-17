@@ -19,6 +19,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * 登录成功处理
  *
@@ -41,13 +45,15 @@ public class UserLoginAuthenticationSuccessHandler implements AuthenticationSucc
         TokenDTO tokenDTO = generateToken(authentication);
         SystemLoginUser loginUser = (SystemLoginUser) authentication.getPrincipal();
         // 缓存用户信息
-        CacheTemplate<Object> cacheTemplate = new CacheTemplate<>(CacheKeyEnum.LOGIN_USER_KEY);
-        cacheTemplate.set(loginUser.getCacheKey(), loginUser);
+        CacheTemplate<Object> loginUserCache = new CacheTemplate<>(CacheKeyEnum.LOGIN_USER_KEY);
+        loginUserCache.set(loginUser.getCacheKey(), loginUser);
+        CacheTemplate<Object> refreshTokenCache = new CacheTemplate<>(CacheKeyEnum.REFRESH_TOKEN_KEY);
+        refreshTokenCache.set(loginUser.getCacheKey(), tokenDTO.getRefreshToken());
         // 解析登录用户信息
         LoginUserVO loginUserVO = new LoginUserVO();
         loginUserVO.setUserInfo(loginService.loadUserById(loginUser.getUserId()));
         loginUserVO.setRoleKey(loginUser.getRoleInfo().getRoleKey());
-        loginUserVO.setPermissions(loginUser.getRoleInfo().getMenuPermissions());
+        loginUserVO.setPermissions(new ArrayList<>(loginUser.getRoleInfo().getMenuPermissions()));
         // 返回结果
         LoginVO result = new LoginVO();
         result.setToken(tokenDTO);

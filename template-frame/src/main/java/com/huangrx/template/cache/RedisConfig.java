@@ -1,10 +1,12 @@
 package com.huangrx.template.cache;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.huangrx.template.serializer.SimpleGrantedAuthorityDeserializer;
+import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
@@ -19,6 +21,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.Duration;
 
@@ -46,6 +49,9 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfig implements CachingConfigurer {
 
+    @Resource(name = "objectMapper")
+    public ObjectMapper objectMapper;
+
     @Bean
     public RedisSerializer<String> keySerializer() {
         return new StringRedisSerializer();
@@ -53,15 +59,30 @@ public class RedisConfig implements CachingConfigurer {
 
     @Bean
     public RedisSerializer<Object> valueSerializer() {
-        //创建JSON序列化器
-        ObjectMapper objectMapper = new ObjectMapper();
+        // 创建JSON序列化器
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        objectMapper.activateDefaultTyping(
-                LaissezFaireSubTypeValidator.instance,
-                ObjectMapper.DefaultTyping.NON_FINAL,
-                JsonTypeInfo.As.WRAPPER_ARRAY);
-
+        // 创建SimpleGrantedAuthority反序列化器
+        objectMapper.registerModule(new SimpleModule().addDeserializer(
+                SimpleGrantedAuthority.class, new SimpleGrantedAuthorityDeserializer()));
         return new Jackson2JsonRedisSerializer<>(objectMapper, Object.class);
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+
+        // key 和 value
+        // 一般来说， redis-key采用字符串序列化；
+        // redis-value采用json序列化， json的体积小，可读性高，不需要实现serializer接口。
+        redisTemplate.setKeySerializer(keySerializer());
+        redisTemplate.setValueSerializer(valueSerializer());
+
+        redisTemplate.setHashKeySerializer(keySerializer());
+        redisTemplate.setHashValueSerializer(valueSerializer());
+
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
     }
 
     /**
@@ -86,24 +107,6 @@ public class RedisConfig implements CachingConfigurer {
                 //如果是空值，不缓存
                 .disableCachingNullValues();
         return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
-    }
-
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-
-        // key 和 value
-        // 一般来说， redis-key采用字符串序列化；
-        // redis-value采用json序列化， json的体积小，可读性高，不需要实现serializer接口。
-        redisTemplate.setKeySerializer(keySerializer());
-        redisTemplate.setValueSerializer(valueSerializer());
-
-        redisTemplate.setHashKeySerializer(keySerializer());
-        redisTemplate.setHashValueSerializer(valueSerializer());
-
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
     }
 
 }

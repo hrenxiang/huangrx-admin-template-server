@@ -15,7 +15,9 @@ public enum TokenType implements BasicEnum<Integer> {
      */
     NORMAL(0, "用户名密码登录"),
 
-    WECHAT(1, "微信登录");
+    REFRESH_TOKEN(1, "刷新令牌登录"),
+
+    WECHAT(2, "微信登录");
 
     private final Integer value;
 

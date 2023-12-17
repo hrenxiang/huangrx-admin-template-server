@@ -1,6 +1,7 @@
 package com.huangrx.template.security.filter;
 
 import com.huangrx.template.security.provider.token.UserLoginNormalAuthenticationToken;
+import com.huangrx.template.security.provider.token.UserLoginRefreshTokenAuthenticationToken;
 import com.huangrx.template.security.provider.token.UserLoginWeXinAuthenticationToken;
 import com.huangrx.template.user.dto.LoginDTO;
 import com.huangrx.template.user.enums.LoginType;
@@ -65,7 +66,7 @@ public class UserAuthenticationFilter extends AbstractAuthenticationProcessingFi
         String loginType = requestBody.getLoginType();
         AbstractAuthenticationToken authenticationToken;
         if (LoginType.REFRESH_TOKEN.value().equalsIgnoreCase(loginType)) {
-            authenticationToken = new UserLoginNormalAuthenticationToken(requestBody.getUsername(), requestBody.getPassword());
+            authenticationToken = new UserLoginRefreshTokenAuthenticationToken(requestBody.getRefreshToken());
         } else if (LoginType.WECHAT.value().equalsIgnoreCase(loginType)) {
             authenticationToken = new UserLoginWeXinAuthenticationToken(requestBody.getOpenId(), requestBody.getWxToken());
         } else {

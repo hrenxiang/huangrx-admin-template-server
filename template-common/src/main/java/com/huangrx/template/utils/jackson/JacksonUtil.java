@@ -42,6 +42,7 @@ import java.util.*;
  */
 @Slf4j
 public class JacksonUtil {
+
     private static final ObjectMapper MAPPER;
 
     private static final Set<JsonReadFeature> JSON_READ_FEATURES_ENABLED = CollUtil.newHashSet(

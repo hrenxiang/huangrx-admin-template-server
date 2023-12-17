@@ -1,7 +1,5 @@
 package com.huangrx.template.user.dto;
 
-import cn.hutool.core.date.DatePattern;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 
@@ -22,7 +20,6 @@ public class TokenDTO {
 
     private String refreshToken;
 
-    @JsonFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
     private Date expire;
 
 }

@@ -1,5 +1,4 @@
 package com.huangrx.template.convert;
-
 import com.huangrx.template.dto.AddUserDTO;
 import com.huangrx.template.po.SysUser;
 import org.mapstruct.Mapper;
