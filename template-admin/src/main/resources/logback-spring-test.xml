@@ -14,7 +14,7 @@
     <property name="CONSOLE_LOG_PATTERN"
               value="%blue(%date{yyyy-MM-dd HH:mm:ss}) %highlight(%-5level) %blue([%thread]) %boldMagenta(%logger{50}) %n------ %cyan(%msg%n)"/>
     <property name="CONSOLE_LOG_PATTERN_2"
-              value="[ %date{yyyy-MM-dd HH:mm:ss} ] %magenta([ %X{tract_id} ]) [ %thread ]  %magenta([ %-5level ])  [ %logger{50} ] %n%cyan(%msg) %n%n"/>
+              value="[ %date{yyyy-MM-dd HH:mm:ss} ] %magenta([ %X{HT-RequestId} ]) [ %thread ]  %magenta([ %-5level ])  [ %logger{50} ] %n%cyan(%msg) %n%n"/>
 
     <!-- 按照每天生成日志文件 -->
     <appender name="APPLICATION"

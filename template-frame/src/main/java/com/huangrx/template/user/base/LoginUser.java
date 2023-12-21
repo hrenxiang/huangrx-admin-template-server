@@ -1,5 +1,7 @@
 package com.huangrx.template.user.base;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.huangrx.template.serializer.SimpleGrantedAuthorityDeserializer;
 import com.huangrx.template.utils.ServletHolderUtil;
 import com.huangrx.template.utils.ip.IpRegionUtil;
 import com.huangrx.template.utils.ip.IpUtil;
@@ -69,6 +71,7 @@ public class LoginUser implements UserDetails {
     }
 
     @Override
+    @JsonDeserialize(using = SimpleGrantedAuthorityDeserializer.class)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
     }

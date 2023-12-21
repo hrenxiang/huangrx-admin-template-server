@@ -24,6 +24,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.Duration;
+import java.util.LinkedList;
 
 /**
  * Redis 配置类 spring boot 3.x
@@ -49,7 +50,7 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfig implements CachingConfigurer {
 
-    @Resource(name = "objectMapper")
+    @Resource
     public ObjectMapper objectMapper;
 
     @Bean
@@ -61,9 +62,6 @@ public class RedisConfig implements CachingConfigurer {
     public RedisSerializer<Object> valueSerializer() {
         // 创建JSON序列化器
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        // 创建SimpleGrantedAuthority反序列化器
-        objectMapper.registerModule(new SimpleModule().addDeserializer(
-                SimpleGrantedAuthority.class, new SimpleGrantedAuthorityDeserializer()));
         return new Jackson2JsonRedisSerializer<>(objectMapper, Object.class);
     }
 

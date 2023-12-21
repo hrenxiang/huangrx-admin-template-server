@@ -5,6 +5,7 @@ import com.huangrx.template.cache.CacheKeyEnum;
 import com.huangrx.template.cache.CacheTemplate;
 import com.huangrx.template.security.utils.TokenUtils;
 import com.huangrx.template.user.base.SystemLoginUser;
+import com.huangrx.template.utils.jackson.JacksonUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,8 +45,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         CacheTemplate<Object> cacheTemplate = new CacheTemplate<>(CacheKeyEnum.LOGIN_USER_KEY);
-        SystemLoginUser loginUser = (SystemLoginUser) cacheTemplate.getObjectOnlyInCacheById(cacheKey);
-
+        SystemLoginUser loginUser = JacksonUtil.parseString(JacksonUtil.toJson(cacheTemplate.getObjectOnlyInCacheById(cacheKey)), SystemLoginUser.class);
         if (loginUser != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             // 如果没有将当前登录用户放入到上下文中的话，会认定用户未授权，返回用户未登陆的错误
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
