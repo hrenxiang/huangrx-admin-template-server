@@ -120,23 +120,23 @@ public class TokenUtils {
     }
 
     /**
-     * 生成访问刷新TOKEN过期时间
+     * 生成访问刷新TOKEN过期时间(JWT使用UTC时间，即1970年1月1日0时0分0秒至今的秒数， +8小时为北京时间)
      *
      * @return 刷新token过期时间
      */
     @NotNull
     public static Date generateRefreshTokenExpireDate() {
-        return generateExpiresDate(Calendar.HOUR, TokenConfig.getRefreshExpireTime());
+        return generateExpiresDate(Calendar.HOUR, TokenConfig.getRefreshExpireTime() + 8);
     }
 
     /**
-     * 生成访问TOKEN过期时间
+     * 生成访问TOKEN过期时间(JWT使用UTC时间，即1970年1月1日0时0分0秒至今的秒数， +8小时为北京时间)
      *
      * @return token过期时间
      */
     @NotNull
     public static Date generateTokenExpireDate() {
-        return generateExpiresDate(Calendar.MINUTE, TokenConfig.getAccessExpireTime());
+        return generateExpiresDate(Calendar.MINUTE, TokenConfig.getAccessExpireTime() + 8);
     }
 
 
